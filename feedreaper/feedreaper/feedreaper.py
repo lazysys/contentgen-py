@@ -4,7 +4,9 @@ from typing import List, Dict, Tuple
 from feedreaper.rssstorage import OPML, RSSFile
 from feedreaper.rssfeed import Entry
 from feedreaper.rssentry import RSSEntryManager
-from feedreaper.summarizer import OpenAIChat, OpenAISummarizer, ContentType
+from feedreaper.summarizer import Summarizer
+
+from lazycommon.content_type import ContentType
 
 @dataclass(frozen=True)
 class StorageConfig:
@@ -31,8 +33,8 @@ class FeedReaper:
 	"""
 
 	_storage_conf: StorageConfig
-	_openai_key: str # TODO: summarizer instance with generalized interface
-	types: List[ContentType] = None # TODO: LazyContent
+	summarizer: Summarizer = None
+	types: List[ContentType] = None
 	
 	def __iter__(self):
 		return self
@@ -44,7 +46,7 @@ class FeedReaper:
 		content = {}
 		entry = next(self._manager)
 		for typ in types:
-			content[typ] = self._summarizer.summarize([entry], typ)
+			content[typ] = self.summarizer.summarize([entry], typ)
 		return (entry, content)
 
 	@property
@@ -68,20 +70,5 @@ class FeedReaper:
 		if storage:
 			self._manager = RSSEntryManager(used_file, storage)
 
-	@property
-	def openai_key(self):
-		return self._openai_key
-	@storage_conf.setter
-	def openai_key(self, key):
-		self._openai_key = key
-		self._setup_summarizer()
-	def _setup_summarizer(self):
-		"""
-		Update the OpenAI API key.
-		"""
-		openai = OpenAIChat(self._openai_key)
-		self._summarizer = OpenAISummarizer(openai)
-	
 	def __post_init__(self):
 		self._setup_storage()
-		self._setup_summarizer()

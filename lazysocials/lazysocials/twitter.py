@@ -48,13 +48,17 @@ class Twitter(Microblog, Thread):
 		for image in images:
 			if image:
 				ids.append(self._old_client.media_upload(image).media_id_string)
+		if len(ids) < 1:
+			ids = None
 		return ids
 
 	def _publish(self, content: str, images: List[str]):
-		ids = self._images_to_media_ids(images)
-		if len(ids) < 1:
-			ids = None
-		self._client.create_tweet(text=content, media_ids=ids)
+		try:
+			self._client.create_tweet(text=content, media_ids=self._images_to_media_ids(images))
+		except tweepy.errors.HTTPException as e:
+			if "Payload too large" in str(e):
+				pass # TODO: compress images
+		
 
 	def publish_microblog(self, content: List[str], images: List[str]):
 		self._publish(content, images)

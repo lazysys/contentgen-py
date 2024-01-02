@@ -3,9 +3,9 @@ from TTS.api import TTS as TTSApi
 
 @dataclass
 class TTS:
-	_model: str = "tts_models/multilingual/multi-dataset/your_tts"
 	reference: str = "ref.wav"
 	language: str = "en"
+	_model: str = "tts_models/multilingual/multi-dataset/your_tts"
 		
 	@property
 	def model(self):
@@ -19,4 +19,4 @@ class TTS:
 		self._tts = TTSApi(model_name=self.model, progress_bar=True)
 
 	def tts(self, text, output):
-		tts.tts_to_file(text, speaker_wav=self.reference, language=self.language, file_path=output)
+		self._tts.tts_to_file(text, speaker_wav=self.reference, language=self.language, file_path=output)

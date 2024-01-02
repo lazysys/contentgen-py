@@ -88,9 +88,9 @@ class OpenAISummarizer(Summarizer):
 		elif into == ContentType.THREAD:
 			raise UnimplementedError
 		elif into == ContentType.ARTICLE:
-			return [self.api.generate(f"You're a highly qualified tech-journalist. You write articles in this format:\n<title of the article>\n<contents of the article>\n\nMake an article out of the following articles:" + articles)]
+			return [self.api.generate(f"You're a highly qualified tech-journalist. You write articles in this format:\nTitle: <title of the article>\nContent: <contents of the article>\n\nMake an article out of the following article(s):" + articles)]
 		elif into == ContentType.SHORT_VIDEO:
-			raise UnimplementedError
+			return [self.api.generate(f"You're a highly qualified tech-journalist. You write video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video>\n\nMake this out of the following article(s):" + articles)]
 		elif into == ContentType.LONG_VIDEO:
 			raise UnimplementedError
 		elif into == ContentType.SINGLE_IMAGE:

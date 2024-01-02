@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 from feedreaper.feedreaper import FeedReaper, StorageConfig
 from feedreaper.rssfeed import Entry
+from feedreaper.summarizer import OpenAIChat, OpenAISummarizer
 
 from lazycommon.content_type import ContentType
 
@@ -13,9 +14,13 @@ load_dotenv()
 
 # FeedReaper
 storage_config = StorageConfig(os.getenv("FEEDS_FILE"), os.getenv("USED_FILE"))
-openai_key = os.getenv("OPENAI_KEY")
+
+openai = OpenAIChat(os.getenv("OPENAI_KEY"))
+summarizer = OpenAISummarizer(openai)
+
 types = [ContentType.MICROBLOG]
-reaper = FeedReaper(storage_config, openai_key, types)
+
+reaper = FeedReaper(storage_config, summarizer, types)
 
 # LazySocials
 twitter = Twitter(
