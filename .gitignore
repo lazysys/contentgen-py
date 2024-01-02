@@ -1,0 +1,8 @@
+*.swp
+*.txt
+.venv
+*.wav
+*.opml
+__pycache__
+.env
+*.egg-info
