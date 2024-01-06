@@ -1,5 +1,6 @@
 -f https://download.pytorch.org/whl/cpu
-torch==2.1.2+cpu.cxx11.abi-cp39-cp39-linux_x86_64.whl
+torch-2.1.2+cpu.cxx11.abi-cp39-cp39-linux_x86_64.whl
+
 requests
 feedparser
 opengraph_py3
