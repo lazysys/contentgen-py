@@ -1,0 +1,15 @@
+wheel
+requests
+feedparser
+opengraph_py3
+python-dotenv
+wheel
+requests
+feedparser
+opengraph_py3
+python-dotenv
+tweepy
+praw
+attrdict
+openai
+tts
