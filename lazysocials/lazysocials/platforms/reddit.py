@@ -1,73 +1,86 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List
+from typing import List, Dict
 
-import tweepy
-from lazycommon.content_type import Content, Microblog, Thread
+import praw
+from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia
+
+from lazycommon.content_type import Content, Microblog
 
 from lazysocials.platforms.platform import Platform
 
 @dataclass(frozen=True)
-class TwitterAuth:
+class RedditAuth:
 	"""
 	Class holding Reddit authentication information.
 	"""
 
-	consumer_key: str
-	consumer_secret: str
-	access_token: str
-	access_token_secret: str
+	client_id: str
+	client_secret: str
+	username: str
+	password: str
+	user_agent: str = "Unknown LazySocials application (by u/gregismotion)"
+	subreddit: str = "test"
 
 @dataclass
-class Twitter(Platform):
-	_twitter_auth: TwitterAuth
+class Reddit(Platform):
+	_auth: RedditAuth
 		
 	@property
-	def twitter_auth(self):
-		return self._twitter_auth
-	@twitter_auth.setter
-	def twitter_auth(self, auth):
-		self._twitter_auth = auth
+	def auth(self):
+		return self._auth
+	@auth.setter
+	def auth(self, auth):
+		self._auth = auth
 		self.__post_init__()
 	
-	def __init__(self, _twitter_auth):
+	def __init__(self, _auth):
 		super().__init__([Microblog])
-		self._twitter_auth = _twitter_auth
+		self._auth = _auth
 		self.__post_init__()
 
 	def __post_init__(self):
-		self._client = tweepy.Client(
-		    consumer_key = self._twitter_auth.consumer_key,
-		    consumer_secret = self._twitter_auth.consumer_secret,
-		    access_token = self._twitter_auth.access_token,
-		    access_token_secret = self._twitter_auth.access_token_secret
+		client = praw.Reddit(
+			client_id = self._auth.client_id,
+			client_secret = self._auth.client_secret,
+			password = self._auth.password,
+			username = self._auth.username,
+			user_agent = self._auth.user_agent
 		)
-		self._old_client = tweepy.API(tweepy.OAuth1UserHandler(
-		    consumer_key = self._twitter_auth.consumer_key,
-		    consumer_secret = self._twitter_auth.consumer_secret,
-		    access_token = self._twitter_auth.access_token,
-		    access_token_secret = self._twitter_auth.access_token_secret
-		))
+		self._subreddit = client.subreddit(self._auth.subreddit)
 	
-	def _images_to_media_ids(self, images: List[str]) -> List[str]:
-		ids = []
-		for image in images:
-			if image:
-				ids.append(self._old_client.media_upload(image).media_id_string)
-		if len(ids) < 1:
-			ids = None
-		return ids
+	def _images_to_inlines(self, images: List[str], captions: List[str] = None) -> Dict[str, InlineImage]:
+		if captions:
+			captions += [None] * (len(images) - len(captions))
+		else:
+			captions = []
+		inlines = {}
+		count = 0
+		for (image, caption) in zip(images, captions):
+			inlines[f"img{count}"] = InlineImage(path = image, caption = caption)
+			count += 1
+		return inlines
+	
+	def _truncate_text(self, text, max_chars):
+		if len(text) <= max_chars:
+			return text
+		last_space = text.rfind(' ', 0, max_chars)
+		if last_space == -1:
+			return text[:max_chars] + '...'
+		return text[:last_space] + '...'
+
+	def _inlines_to_selftext(self, inlines: Dict[str, InlineImage]) -> str:
+		result = ""
+		for key, _ in inlines:
+			result += f" {key}"
+		return result
 
 	def _publish(self, content: str, images: List[str]) -> bool:
-		try:
-			response = self._client.create_tweet(text=content, media_ids=self._images_to_media_ids(images))
-			return len(response.errors) < 1
-		except tweepy.errors.HTTPException as e:
-			if "Payload too large" in str(e):
-				pass # TODO: compress images
-			return False
-		
-
+		inlines = self._images_to_inlines(images)
+		images = self._inlines_to_selftext(inlines)
+		title = self._truncate_text(content, 130)
+		self._subreddit.submit(content, inline_media = inlines, selftext = content + images)
+	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
 			text = ""
