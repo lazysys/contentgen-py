@@ -1,5 +1,5 @@
 -f https://download.pytorch.org/whl/cpu
-pytorch==2.1.2+cpu
+torch==2.1.2+cpu
 requests
 feedparser
 opengraph_py3
