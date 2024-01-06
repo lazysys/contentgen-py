@@ -8,7 +8,8 @@ from lazysummary.openai import OpenAISummarizer, OpenAIChat
 from lazycommon.content_type import *
 
 from lazysocials.lazysocials import LazySocials
-from lazysocials.twitter import Twitter, TwitterAuth
+from lazysocials.platforms.twitter import Twitter, TwitterAuth
+from lazysocials.platforms.reddit import Reddit, RedditAuth
 
 load_dotenv()
 
@@ -36,7 +37,18 @@ twitter = Twitter(
 		access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
 	)
 )
-platforms = [twitter]
+reddit = Reddit(
+	RedditAuth(
+		client_id = os.getenv("REDDIT_CLIENT_ID"),
+		client_secret = os.getenv("REDDIT_CLIENT_SECRET"),
+		username = os.getenv("REDDIT_USERNAME"),
+		password = os.getenv("REDDIT_PASSWORD"),
+		user_agent = "LazyContent (by u/gregismotion)",
+		subreddit = "test"
+
+	)
+)
+platforms = [twitter, reddit]
 lazysocials = LazySocials(platforms)
 
 entry = next(reaper)

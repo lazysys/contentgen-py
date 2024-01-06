@@ -22,6 +22,7 @@ class RedditAuth:
 	user_agent: str = "Unknown LazySocials application (by u/gregismotion)"
 	subreddit: str = "test"
 
+# TODO: ability to cross-post
 @dataclass
 class Reddit(Platform):
 	_auth: RedditAuth
@@ -49,15 +50,12 @@ class Reddit(Platform):
 		)
 		self._subreddit = client.subreddit(self._auth.subreddit)
 	
-	def _images_to_inlines(self, images: List[str], captions: List[str] = None) -> Dict[str, InlineImage]:
-		if captions:
-			captions += [None] * (len(images) - len(captions))
-		else:
-			captions = []
+	# TODO: captions per image
+	def _images_to_inlines(self, images: List[str]) -> Dict[str, InlineImage]:
 		inlines = {}
 		count = 0
-		for (image, caption) in zip(images, captions):
-			inlines[f"img{count}"] = InlineImage(path = image, caption = caption)
+		for image in images:
+			inlines[f"img{count}"] = InlineImage(path = image)
 			count += 1
 		return inlines
 	
@@ -71,15 +69,17 @@ class Reddit(Platform):
 
 	def _inlines_to_selftext(self, inlines: Dict[str, InlineImage]) -> str:
 		result = ""
-		for key, _ in inlines:
-			result += f" {key}"
+		for key in inlines.keys():
+			result += f" {{{key}}}"
 		return result
 
 	def _publish(self, content: str, images: List[str]) -> bool:
 		inlines = self._images_to_inlines(images)
-		images = self._inlines_to_selftext(inlines)
+		image_text = self._inlines_to_selftext(inlines)
 		title = self._truncate_text(content, 130)
-		self._subreddit.submit(content, inline_media = inlines, selftext = content + images)
+		print(inlines)
+		print(image_text)
+		self._subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
 	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
