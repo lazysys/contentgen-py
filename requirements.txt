@@ -6,9 +6,8 @@ opengraph_py3
 python-dotenv
 requests
 feedparser
-opengraph_py3
 tweepy
 praw
 attrdict
 openai
-tts
+#tts
