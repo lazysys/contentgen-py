@@ -1,4 +1,4 @@
-https://download.pytorch.org/whl/cpu/torch-2.1.2+cpu.cxx11.abi-cp39-cp39-linux_x86_64.whl
+https://download.pytorch.org/whl/cpu/torch-2.1.2%2Bcpu-cp39-cp39-linux_x86_64.whl
 
 requests
 feedparser
