@@ -3,9 +3,9 @@ from typing import *
 from abc import ABC, abstractmethod
 import xml.etree.ElementTree as ET
 
-class RSSStorage(ABC):
+class Storage(ABC):
 	"""
-	Interface to handle the storage of feed URLS.
+	Interface to handle the storage of feeds.
 	"""
 
 	@property
@@ -20,9 +20,9 @@ class RSSStorage(ABC):
 		pass
 
 @dataclass
-class OPML(RSSStorage):
+class OPML(Storage):
 	"""
-	Class that implements the [RSSStorage] interface and uses an OPML file.
+	Class that implements the [Storage] interface and uses an OPML file.
 	Many readers export into this format, so it's convenient to use.
 	
 	:param path: Path to the OPML file.
@@ -41,9 +41,9 @@ class OPML(RSSStorage):
 		return feed_urls
 
 @dataclass
-class RSSFile(RSSStorage):
+class File(Storage):
 	"""
-	Class that implements the [RSSStorage] interface and uses a normal text file.
+	Class that implements the [Storage] interface and uses a normal text file.
 	As every line contains a feed URL, it's quite easy to write/parse.
 	
 	:param path: Path to the text file.

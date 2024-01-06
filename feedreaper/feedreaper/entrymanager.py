@@ -3,14 +3,17 @@ import random
 import requests
 import tempfile
 import opengraph_py3
-from feedreaper.rssfeed import Entry, RSSFeed
-from feedreaper.rssstorage import RSSStorage
+
+from feedreaper.feed import Feed
+from feedreaper.storage import Storage
 from typing import *
 
+from lazycommon.entry import Entry
+
 @dataclass
-class RSSEntryManager:
+class EntryManager:
 	"""
-	Iterator to get a random RSS entry from the stored feed URLs.
+	Iterator to get a random entry from the stored feeds.
 	Doesn't allow a single entry to be returned more than once according to the used storage and the entry's ID.
 	
 	:param used_path: The file that holds the used entries' ID.
@@ -18,7 +21,7 @@ class RSSEntryManager:
 	"""
 
 	used_path: str
-	storage: RSSStorage
+	storage: Storage
 
 	def __iter__(self):
 		return self	
@@ -34,7 +37,7 @@ class RSSEntryManager:
 		"""
 		entries = []
 		for url in self.storage.urls:
-			entries += RSSFeed(url).entries
+			entries += Feed(url).entries
 		return entries
 
 	def _pick_random_unused_entry(self) -> Entry:
@@ -51,7 +54,7 @@ class RSSEntryManager:
 			self._set_entry_used(entry)
 			break
 		return entry
-	def _is_entry_used(self, entry: Entry) -> bool:
+	def _is_entry_used(self, entry: Entry) -> bool: # TODO: abstract used entry storage
 		 try:
 			 with open(self.used_path, "r") as file:
 				 return entry.id in file.read().splitlines()

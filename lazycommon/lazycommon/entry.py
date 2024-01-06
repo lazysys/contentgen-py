@@ -1,8 +1,6 @@
+from typing import List, Dict, Any
 from dataclasses import dataclass
-import feedparser
-from datetime import datetime, timedelta
-from time import mktime
-from typing import *
+
 import opengraph_py3
 import requests
 import tempfile
@@ -10,7 +8,7 @@ import tempfile
 @dataclass
 class Entry:
 	"""
-	RSS feed entry with convenience features.
+	Feed entry with convenience features to be used for content creation.
 	
 	:param entry: FeedParser's entry that is used as a base.
 	"""
@@ -19,7 +17,7 @@ class Entry:
 	@property
 	def thumbnail(self) -> str:
 		"""
-		Download the thumbnail from the OpenGraph metadata. Necessary as RSS doesn't have a standard way of specifying a thumbnail.
+		Download the thumbnail from the OpenGraph metadata.
 		
 		:return: The local file path to the thumbnail.
 		"""
@@ -32,7 +30,7 @@ class Entry:
 	@property
 	def images(self) -> List[str]: # TODO: implement scraping all images from an entry
 		"""
-		Download all images that appear in this RSS entry.
+		Download all images that appear in this entry.
 
 		:return: A list of local file paths to the images.
 		"""
@@ -42,7 +40,7 @@ class Entry:
 	@property
 	def related_images(self) -> List[str]: # TODO: implement searching for related images
 		"""
-		Download all images that appear in this RSS entry PLUS anything that is related to the topic of the given entry.
+		Download all images that appear in this entry PLUS anything that is related to the topic of the given entry.
 
 		:return: A list of local file paths to the images.
 		"""
@@ -77,30 +75,3 @@ class Entry:
 			return temp_file_path
 		else:
 			return None
-
-@dataclass
-class RSSFeed:
-	"""
-	Interface to handle an RSS feed.
-	
-	:param url: The URL to the RSS feed.
-	"""
-
-	url: str
-
-	@property
-	def entries(self) -> List[Entry]:
-		"""
-		Collects every target entry.
-		Currently a one-week range is hard-coded, will make it so you can set other filters.
-
-
-		:return: A list with every entry that matches the given filter.
-		"""
-
-		entries = []
-		feed = feedparser.parse(self.url)
-		for entry in feed.entries:
-			if datetime.fromtimestamp(mktime(entry.updated_parsed)) > datetime.now() - timedelta(weeks=1): # TODO: custom filters
-				entries.append(Entry(entry))
-		return entries

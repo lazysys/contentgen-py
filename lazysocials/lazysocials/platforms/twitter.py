@@ -3,8 +3,10 @@ from dataclasses import dataclass
 from typing import List
 
 import tweepy
+from lazycommon.content_type import Content, Microblog, Thread
 
-from lazysocials.lazysocials import Microblog, Thread
+from lazysocials.platforms.platform import Platform
+
 
 @dataclass(frozen=True)
 class TwitterAuth:
@@ -18,16 +20,21 @@ class TwitterAuth:
 	access_token_secret: str
 
 @dataclass
-class Twitter(Microblog, Thread):
+class Twitter(Platform):
 	_twitter_auth: TwitterAuth
-	
+		
 	@property
 	def twitter_auth(self):
 		return self._twitter_auth
 	@twitter_auth.setter
 	def twitter_auth(self, auth):
 		self._twitter_auth = auth
-		__post_init__()
+		self.__post_init__()
+	
+	def __init__(self, _twitter_auth):
+		super().__init__([Microblog])
+		self._twitter_auth = _twitter_auth
+		self.__post_init__()
 
 	def __post_init__(self):
 		self._client = tweepy.Client(
@@ -52,16 +59,24 @@ class Twitter(Microblog, Thread):
 			ids = None
 		return ids
 
-	def _publish(self, content: str, images: List[str]):
+	def _publish(self, content: str, images: List[str]) -> bool:
 		try:
-			self._client.create_tweet(text=content, media_ids=self._images_to_media_ids(images))
+			response = self._client.create_tweet(text=content, media_ids=self._images_to_media_ids(images))
+			return len(response.errors) < 1
 		except tweepy.errors.HTTPException as e:
 			if "Payload too large" in str(e):
 				pass # TODO: compress images
+			return False
 		
 
-	def publish_microblog(self, content: List[str], images: List[str]):
-		self._publish(content, images)
-
-	def publish_thread(self, content: List[str], images: List[str]):
-		raise UnimplementedError
+	def publish(self, content: Content) -> bool:
+		if super().publish(content):
+			text = ""
+			images = []
+			if isinstance(content, Microblog):
+				text = content.content
+				images = content.images
+			if not len(text) == 0:
+				return self._publish(text, images)
+			else:
+				return False

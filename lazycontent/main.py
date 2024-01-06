@@ -2,10 +2,10 @@ import os
 from dotenv import load_dotenv
 
 from feedreaper.feedreaper import FeedReaper, StorageConfig
-from feedreaper.rssfeed import Entry
-from feedreaper.summarizer import OpenAIChat, OpenAISummarizer
 
-from lazycommon.content_type import ContentType
+from lazysummary.openai import OpenAISummarizer, OpenAIChat
+
+from lazycommon.content_type import *
 
 from lazysocials.lazysocials import LazySocials
 from lazysocials.twitter import Twitter, TwitterAuth
@@ -14,13 +14,18 @@ load_dotenv()
 
 # FeedReaper
 storage_config = StorageConfig(os.getenv("FEEDS_FILE"), os.getenv("USED_FILE"))
+reaper = FeedReaper(storage_config)
 
-openai = OpenAIChat(os.getenv("OPENAI_KEY"))
-summarizer = OpenAISummarizer(openai)
+# LazySummary
+key = os.getenv("OPENAI_KEY")
+api = OpenAIChat(key)
+summarizer = OpenAISummarizer(api)
 
-types = [ContentType.MICROBLOG]
+# LazyCanvas
+# TODO: implement
 
-reaper = FeedReaper(storage_config, summarizer, types)
+# LazyVideo
+# TODO: implement
 
 # LazySocials
 twitter = Twitter(
@@ -34,5 +39,9 @@ twitter = Twitter(
 platforms = [twitter]
 lazysocials = LazySocials(platforms)
 
-post = next(reaper)
-lazysocials.publish(post)
+entry = next(reaper)
+
+summary = summarizer.summarize([entry], Microblog)
+content = Microblog(summary[0], [entry.thumbnail])
+
+lazysocials.publish(content)

@@ -1,9 +1,7 @@
 from lazysocials.lazysocials import LazySocials
-from lazysocials.twitter import Twitter, TwitterAuth
+from lazysocials.platforms.twitter import Twitter, TwitterAuth
 
-from feedreaper.rssfeed import Entry
-
-from lazycommon.content_type import ContentType
+from lazycommon.content_type import Microblog
 
 import os
 from dotenv import load_dotenv
@@ -21,11 +19,4 @@ twitter = Twitter(
 platforms = [twitter]
 lazysocials = LazySocials(platforms)
 
-lazysocials.publish(
-	(
-		Entry({ "link": "google.com" }), 
-		{
-			ContentType.MICROBLOG: ["test"]
-		}
-	)
-)
+lazysocials.publish(Microblog("test", []))

@@ -1,12 +1,10 @@
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 
-from feedreaper.rssstorage import OPML, RSSFile
-from feedreaper.rssfeed import Entry
-from feedreaper.rssentry import RSSEntryManager
-from feedreaper.summarizer import Summarizer
+from feedreaper.storage import OPML, File
+from feedreaper.entrymanager import EntryManager
 
-from lazycommon.content_type import ContentType
+from lazycommon.entry import Entry
 
 @dataclass(frozen=True)
 class StorageConfig:
@@ -28,26 +26,14 @@ class FeedReaper:
 	Can be used as an iterator.
 	
 	:param storage_conf: The configuration which points to the storage files.
-	:param openai_key: Currently only OpenAI's chat API is supported for summarization, so this is the API key. In the future you'll have to provide a summarizer class that conforms to a generic interface.
-	:param types: The types of Content to spit back. This will be generalized with LazyContent.
 	"""
 
 	_storage_conf: StorageConfig
-	summarizer: Summarizer = None
-	types: List[ContentType] = None
 	
 	def __iter__(self):
 		return self
-	def __next__(self) -> Tuple[Entry, Dict[ContentType, List[str]]]:
-		types = self.types
-		if not types:
-			types = [el.value for el in ContentType]
-
-		content = {}
-		entry = next(self._manager)
-		for typ in types:
-			content[typ] = self.summarizer.summarize([entry], typ)
-		return (entry, content)
+	def __next__(self) -> Entry:
+		return next(self._manager)
 
 	@property
 	def storage_conf(self):
@@ -66,9 +52,9 @@ class FeedReaper:
 		if "opml" in feed_file:
 			storage = OPML(feed_file)
 		else:
-			storage = RSSFile(feed_file)
+			storage = File(feed_file)
 		if storage:
-			self._manager = RSSEntryManager(used_file, storage)
+			self._manager = EntryManager(used_file, storage)
 
 	def __post_init__(self):
 		self._setup_storage()

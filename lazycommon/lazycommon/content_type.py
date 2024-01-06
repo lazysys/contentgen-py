@@ -1,14 +1,34 @@
-from enum import Enum
+from typing import List
+from dataclasses import dataclass
 
-class ContentType(Enum):
-	"""
-	Enum that specifies the types of posts that can exist.
-	"""
-	
-	MICROBLOG = 0
-	THREAD = 6
-	ARTICLE = 1
-	SHORT_VIDEO = 2
-	LONG_VIDEO = 3
-	SINGLE_IMAGE = 4
-	CAROUSEL = 5
+@dataclass
+class Content:
+	content: str
+
+@dataclass
+class Microblog(Content):
+	images: List[str]
+@dataclass
+class Thread(Content):
+	microblogs: List[Microblog]
+
+@dataclass
+class Article(Content):
+	title: str
+
+@dataclass
+class Video(Content):
+	video: str
+@dataclass
+class ShortVideo(Video):
+	pass
+@dataclass
+class LongVideo(Video):
+	pass
+
+@dataclass
+class Image(Content):
+	image: str
+@dataclass
+class Carousel(Content):
+	images: List[Image]
