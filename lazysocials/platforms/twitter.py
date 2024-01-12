@@ -31,8 +31,8 @@ class Twitter(Platform):
 		self._twitter_auth = auth
 		self.__post_init__()
 	
-	def __init__(self, _twitter_auth):
-		super().__init__([Microblog])
+	def __init__(self, _twitter_auth, types = None):
+		super().__init__(types or [Microblog])
 		self._twitter_auth = _twitter_auth
 		self.__post_init__()
 

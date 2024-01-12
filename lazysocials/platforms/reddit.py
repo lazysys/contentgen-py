@@ -35,8 +35,8 @@ class Reddit(Platform):
 		self._auth = auth
 		self.__post_init__()
 	
-	def __init__(self, _auth):
-		super().__init__([Microblog])
+	def __init__(self, _auth, types = None):
+		super().__init__(types or [Microblog])
 		self._auth = _auth
 		self.__post_init__()
 

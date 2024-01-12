@@ -12,4 +12,5 @@ class LazySocials:
 	
 	def publish(self, content: Content):
 		for platform in self.platforms:
-			platform.publish(content)
+			if any(isinstance(content, x) for x in platform.types):
+				platform.publish(content)

@@ -13,7 +13,7 @@ openai
 #tts
 
 
-./lazycommon
-./feedreaper
-./lazysummary
-./lazysocials
+#./lazycommon
+#./feedreaper
+#./lazysummary
+#./lazysocials
