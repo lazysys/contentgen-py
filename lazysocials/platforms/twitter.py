@@ -59,24 +59,30 @@ class Twitter(Platform):
 			ids = None
 		return ids
 
-	def _publish(self, content: str, images: List[str]) -> bool:
+	def _publish(self, content: str, images: List[str], in_reply_to: str = None) -> str:
 		try:
-			response = self._client.create_tweet(text=content, media_ids=self._images_to_media_ids(images))
+			response = self._client.create_tweet(text = content, media_ids = self._images_to_media_ids(images), in_reply_to_tweet_id = in_reply_to)
 			return len(response.errors) < 1
 		except tweepy.errors.HTTPException as e:
 			if "Payload too large" in str(e):
 				pass # TODO: compress images
-			return False
+			return None
 		
 
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
-			text = ""
-			images = []
 			if isinstance(content, Microblog):
-				text = content.content
-				images = content.images
-			if not len(text) == 0:
-				return self._publish(text, images)
+				return bool(self._publish(content.content, content.images))
+			elif isinstance(content, Thread):
+				last_tweet = None
+				for microblog in content.microblogs:
+					last_tweet = self._publish(microblog.content, microblog.images, last_tweet)
+				return bool(last_tweet)
+			elif isinstance(content, Article):
+				raise UnimplementedError
+			elif isinstance(content, Image):
+				return bool(self._publish(content.content, [content.image]))
+			elif isinstance(content, Carousel):
+				return bool(self._publish(content.content, [img.image for img in content.images]))
 			else:
 				return False
