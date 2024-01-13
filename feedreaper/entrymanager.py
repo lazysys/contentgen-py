@@ -46,15 +46,13 @@ class EntryManager:
 		count = 0
 		while True:
 			entry = random.choice(entries)
-			try:
+			if self._is_entry_used(entry) or not hasattr(entry, "content"):
+				count += 1
+				entry = None
 				if count == len(entries):
 					break
-				elif self._is_entry_used(entry) or not entry.content:
-					count += 1
+				else:
 					continue
-			except AttributeError:
-				count += 1
-				continue
 			self._set_entry_used(entry)
 			break
 		return entry
