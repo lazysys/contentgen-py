@@ -4,6 +4,7 @@ from typing import List, Dict, Type
 
 import praw
 from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia, Subreddit
+from praw.exceptions import RedditAPIException
 
 from lazycommon.content_type import Content, Microblog
 
@@ -38,8 +39,8 @@ class Reddit(Platform):
 	def subreddits(self) -> List[str]:
 		return [x.name for x in self._subreddits]
 	@subreddits.setter
-	def subreddits(self, subreddits: List[str]):
-		self._subreddits = [self._client.subreddit(x) for x in subreddits]
+	def subreddits(self, subreddits: Dict[str, str]):
+		self._subreddits = [(self._client.subreddit(key), val) for key, val in subreddits.items()]
 
 	def __init__(self, _auth, subreddits: List[str], types: List[Type[Content]] = None):
 		super().__init__(types or [Microblog])
@@ -81,20 +82,44 @@ class Reddit(Platform):
 		return result
 
 	def _publish(self, content: str, images: List[str]) -> bool:
-		title = self._truncate_text(content, 300)
-				
 		for subreddit in self._subreddits:
+			flair = [flair["flair_template_id"] for flair in subreddit[0].flair.link_templates.user_selectable() if flair["flair_text"] == subreddit[1]]
+			subreddit = subreddit[0]
+
+			requirements = subreddit.post_requirements()
+			title = self._truncate_text(content, requirements["title_text_max_length"] or 300)
+			selftext = self._truncate_text(content, requirements["body_text_max_length"] or 10000)
+
 			# FIXME: as soon as PR rolls in to have text in image posts, we don't need this and it will look better everytime
-			if title == content and len(images) > 0:
-				if len(images) > 1:
-					captioned_images = { str(i): value for i, value in enumerate(images) }
-					subreddit.submit_gallery(content, captioned_images)
-				else:
-					subreddit.submit_image(content, images[0])
-			else:
-				inlines = self._images_to_inlines(images)
-				image_text = self._inlines_to_selftext(inlines)
-				subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
+			NO_IMAGES = False
+			SUBMIT_VALIDATION_BODY_NOT_ALLOWED = False
+			while True:
+				try:
+					if NO_IMAGES and not SUBMIT_VALIDATION_BODY_NOT_ALLOWED:
+						subreddit.submit(title, selftext = selftext, flair_id = flair)
+						break
+					elif SUBMIT_VALIDATION_BODY_NOT_ALLOWED:
+						subreddit.submit(title, selftext = "", flair_id = flair)
+						break
+
+					if title == content and len(images) > 0:
+						if len(images) > 1:
+							captioned_images = { str(i): value for i, value in enumerate(images) }
+							subreddit.submit_gallery(title, captioned_images, flair_id = flair)
+						else:
+							subreddit.submit_image(title, images[0], flair_id = flair)
+					else:
+						inlines = self._images_to_inlines(images)
+						image_text = self._inlines_to_selftext(inlines)
+						subreddit.submit(title, inline_media = inlines, selftext = selftext + image_text, flair_id = flair)
+					break
+				except RedditAPIException as e:
+					e = str(e)
+					if "NO_IMAGES" in e:
+						NO_IMAGES = True
+					elif "SUBMIT_VALIDATION_BODY_NOT_ALLOWED" in e: # FIXME: but they might allow images? quite weird requirements ngl reddit
+						SUBMIT_VALIDATION_BODY_NOT_ALLOWED = True
+				
 	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
