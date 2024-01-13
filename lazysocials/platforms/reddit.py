@@ -81,13 +81,13 @@ class Reddit(Platform):
 			result += f" {{{key}}}"
 		return result
 
-	def _publish(self, content: str, images: List[str]) -> bool:
+	def _publish(self, content: str, title: str = None, images: List[str] = []) -> bool:
 		for subreddit in self._subreddits:
 			flair = [flair["flair_template_id"] for flair in subreddit[0].flair.link_templates.user_selectable() if flair["flair_text"] == subreddit[1]]
 			subreddit = subreddit[0]
 
 			requirements = subreddit.post_requirements()
-			title = self._truncate_text(content, requirements["title_text_max_length"] or 300)
+			title = title or self._truncate_text(content, requirements["title_text_max_length"] or 300)
 			selftext = self._truncate_text(content, requirements["body_text_max_length"] or 10000)
 
 			# FIXME: as soon as PR rolls in to have text in image posts, we don't need this and it will look better everytime
@@ -119,16 +119,22 @@ class Reddit(Platform):
 						NO_IMAGES = True
 					elif "SUBMIT_VALIDATION_BODY_NOT_ALLOWED" in e: # FIXME: but they might allow images? quite weird requirements ngl reddit
 						SUBMIT_VALIDATION_BODY_NOT_ALLOWED = True
+			return True
 				
 	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
-			text = ""
-			images = []
 			if isinstance(content, Microblog):
-				text = content.content
-				images = content.images
-			if not len(text) == 0:
-				return self._publish(text, images)
+				return bool(self._publish(content.content, content.images))
+			elif isinstance(content, Thread):
+				content = "\n".join([microblog.content for microblog in content.microblogs])
+				images = [item for sublist in [microblog.images for microblog in content.images] for item in sublist]
+				return self._publish(content, images = images)
+			elif isinstance(content, Article):
+				return self._publish(content.content, title = content.title)
+			elif isinstance(content, Image):
+				return self._publish(content.content, [content.image])
+			elif isinstance(content, Carousel):
+				return self._publish(content.content, [img.image for img in content.images])
 			else:
 				return False
