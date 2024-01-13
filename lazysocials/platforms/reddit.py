@@ -81,13 +81,20 @@ class Reddit(Platform):
 		return result
 
 	def _publish(self, content: str, images: List[str]) -> bool:
-		inlines = self._images_to_inlines(images)
-		image_text = self._inlines_to_selftext(inlines)
-		title = self._truncate_text(content, 130)
-		print(inlines)
-		print(image_text)
+		title = self._truncate_text(content, 300)
+				
 		for subreddit in self._subreddits:
-			subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
+			# FIXME: as soon as PR rolls in to have text in image posts, we don't need this and it will look better everytime
+			if title == content and len(images) > 0:
+				if len(images) > 1:
+					captioned_images = { str(i): value for i, value in enumerate(images) }
+					subreddit.submit_gallery(content, captioned_images)
+				else:
+					subreddit.submit_image(content, images[0])
+			else:
+				inlines = self._images_to_inlines(images)
+				image_text = self._inlines_to_selftext(inlines)
+				subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
 	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
