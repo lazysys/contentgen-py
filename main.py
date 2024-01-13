@@ -45,12 +45,14 @@ reddit = Reddit(
 		password = os.getenv("REDDIT_PASSWORD"),
 		user_agent = "LazyContent (by u/gregismotion)",
 	),
-	["StableDiffusion", "technology", "artificial"]
+	{"StableDiffusion": "News", "technology": "Artificial Intelligence", "artificial": "News"}
 )
-platforms = [twitter, reddit]
+platforms = [reddit]
 lazysocials = LazySocials(platforms)
 
-entry = next(reaper)
+entry = None
+while not entry:
+	entry = next(reaper)
 
 summary = summarizer.summarize([entry], Microblog)
 content = Microblog(summary[0], [entry.thumbnail])
