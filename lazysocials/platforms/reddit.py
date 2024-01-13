@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Dict
+from typing import List, Dict, Type
 
 import praw
-from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia
+from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia, Subreddit
 
 from lazycommon.content_type import Content, Microblog
 
@@ -20,7 +20,6 @@ class RedditAuth:
 	username: str
 	password: str
 	user_agent: str = "Unknown LazySocials application (by u/gregismotion)"
-	subreddit: str = "test"
 
 # TODO: ability to cross-post
 @dataclass
@@ -35,20 +34,28 @@ class Reddit(Platform):
 		self._auth = auth
 		self.__post_init__()
 	
-	def __init__(self, _auth, types = None):
+	@property
+	def subreddits(self) -> List[str]:
+		return [x.name for x in self._subreddits]
+	@subreddits.setter
+	def subreddits(self, subreddits: List[str]):
+		self._subreddits = [self._client.subreddit(x) for x in subreddits]
+
+	def __init__(self, _auth, subreddits: List[str], types: List[Type[Content]] = None):
 		super().__init__(types or [Microblog])
 		self._auth = _auth
 		self.__post_init__()
+		self._subreddits = []
+		self.subreddits = subreddits
 
 	def __post_init__(self):
-		client = praw.Reddit(
+		self._client = praw.Reddit(
 			client_id = self._auth.client_id,
 			client_secret = self._auth.client_secret,
 			password = self._auth.password,
 			username = self._auth.username,
 			user_agent = self._auth.user_agent
 		)
-		self._subreddit = client.subreddit(self._auth.subreddit)
 	
 	# TODO: captions per image
 	def _images_to_inlines(self, images: List[str]) -> Dict[str, InlineImage]:
@@ -79,7 +86,8 @@ class Reddit(Platform):
 		title = self._truncate_text(content, 130)
 		print(inlines)
 		print(image_text)
-		self._subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
+		for subreddit in self._subreddits:
+			subreddit.submit(content, inline_media = inlines, selftext = content + image_text)
 	
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):

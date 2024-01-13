@@ -44,9 +44,8 @@ reddit = Reddit(
 		username = os.getenv("REDDIT_USERNAME"),
 		password = os.getenv("REDDIT_PASSWORD"),
 		user_agent = "LazyContent (by u/gregismotion)",
-		subreddit = "test"
-
-	)
+	),
+	["test"]
 )
 platforms = [twitter, reddit]
 lazysocials = LazySocials(platforms)
