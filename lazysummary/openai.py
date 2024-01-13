@@ -54,6 +54,15 @@ class OpenAISummarizer(Summarizer):
 	"""
 
 	api: OpenAIChat
+	
+	def _convert_answer_to_std(answer: str) -> List[str]:
+		lines = answer.split("\n")
+		title = lines[0].replace("Title: ")
+		content = "\n".join(lines[1:]).replace("Content: ", "")
+		return [title, content]
+	def _convert_carousel_to_std(answer: str) -> List[str]:
+		lines = answer.split("\n")
+		return [item.split(': ', 1)[1].strip() for item in lines if item.strip()]
 
 	def summarize(self, entries: List[Entry], into: Type[Content]) -> List[str]:
 		"""
@@ -67,7 +76,6 @@ class OpenAISummarizer(Summarizer):
 			articles += f"\nTitle: {entry.title}\n"
 			articles += f"Content: {entry.content}\n"
 		
-		# FIXME: dabbling into subclasses and all, what takes priority? rework this
 		if issubclass(into, ContentType.Microblog):
 				answer = self.api.generate(f"DO NOT MENTION THE CHARACTER COUNT, NOR SHOW THAT YOU ARE A BOT! BE A HUMAN WRITING NORMALLY A CONCISE POST! DON'T INTRODUCE YOURSELF! You're a highly qualified tech-journalist. Make a summary of the following articles combined, at max 280 characters:" + articles)
 				while True:
@@ -76,15 +84,19 @@ class OpenAISummarizer(Summarizer):
 					else:
 						return [answer]
 		elif issubclass(into, ContentType.Thread):
-			raise UnimplementedError
+			answer = self.api.generate(f"You're a highly qualified tech journalist.\n\ndon't prefix the tweets\ndon't use hashtags\n\nCreate a Twitter thread with tweet blocks seperated by --- from the following article(s) (combine them into one summary thread):" + articles)
+			return answer.split("\n---\n")
 		elif issubclass(into, ContentType.Article):
-			return [self.api.generate(f"You're a highly qualified tech-journalist. You write articles in this format:\nTitle: <title of the article>\nContent: <contents of the article>\n\nMake an article out of the following article(s):" + articles)]
+			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write articles in this format:\nTitle: <title of the article>\nContent: <contents of the article>\n\nMake ONE SUMMARY article out of the following article(s):" + articles)
+			return self._convert_answer_to_std(answer)
 		elif issubclass(into, ContentType.ShortVideo):
-			return [self.api.generate(f"You're a highly qualified tech-journalist. You write video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video>\n\nMake this out of the following article(s):" + articles)]
+			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write short (15s) video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video>\n\nYou follow the 3 point structure: hook, some talking points, call to action (the goal is to get engagement) => but all woven into one text to be read out loud (and put all these under Content:)\n\ndont use emojis\nbe concise, don't introduce yourself\n\nMake ONE SHORT SUMMARY VIDEO out of the following article(s):" + articles)
+			return self._convert_answer_to_std(answer)
 		elif issubclass(into, ContentType.LongVideo):
-			raise UnimplementedError
+			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write long (5min) video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video, NO FORMATTING, ONLY WHAT WOULD BE SPOKEN OUT>\n\nYou follow the 3 point structure: hook, many talking points, call to action (the goal is to get engagement) => but all woven into one text to be read out loud (and put all these under Content:)\n\ndont use emojis\nbe concise, don't introduce yourself\n\nMake ONE LONG SUMMARY VIDEO out of the following article(s):" + articles)
+			return self._convert_answer_to_std(answer)
 		elif issubclass(into, ContentType.Image):
-			raise UnimplementedError
+			return [self.api.generate(f"You're a highly qualified tech-journalist.\n\nUse the following format (NO FORMATTING, THIS IS GOING STRAIGHT TO THE IMAGE):\n<headline without quotes>\n\nMake ONE short and concise summary headline (one line) that can be put on an image from the following article(s) (handle these articles as one):" + articles)]
 		elif issubclass(into, ContentType.Carousel):
-			raise UnimplementedError
+			return self._convert_carousel_to_std(self.api.generate(f"You're a highly qualified tech journalist. Make an Instagram carousel slide by slide using this format (every slide is one line, one sentence, atomic short and concise) (only one caption which can be longer):\n\nCaption: <caption>\n\n1: <first slide>\n2: <second slide>\n<...as many as you need...>\n\nSummarize in this format the following article(s) (in your head combine these into one):" + articles))
 
