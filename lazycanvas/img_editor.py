@@ -41,6 +41,7 @@ class ImageEditor:
 	def write_text(self, text: str, 
 		size: int,
 		font: Font,
+		font_type: FontType = FontType.NORMAL,
 		center: Tuple[int, int] = None, 
 		constraints: Tuple[int, int, int, int] = (None, None, None, None),
 		color: Tuple[int, int, int] = (255, 255, 255),
@@ -49,7 +50,7 @@ class ImageEditor:
 		image = self.image.copy()
 		draw = ImageDraw.Draw(image)
 		
-		_font = font.get(size, FontType.NORMAL)
+		_font = font.get(size, font_type)
 
 		if center is None:
 			x = image.width / 2

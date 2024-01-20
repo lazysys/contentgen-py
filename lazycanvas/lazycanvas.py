@@ -4,6 +4,8 @@ from dataclasses import dataclass
 
 from templates.templates import CanvasTemplate
 
+from font import FontType
+
 @dataclass
 class LazyCanvas:
 	template: CanvasTemplate
@@ -24,8 +26,9 @@ class LazyCanvas:
 		editor.write_text(
 				headline, 
 				font = self.template.fonts[0], 
+				font_type = FontType.BOLD,
 				color = self.template.colors[0], 
-				size = self.template.sizes["headline"], 
+				size = self.template.sizes["headline"],
 				constraints = editor.points.body_constraints
 		)
 		return self._branding(editor.image)
