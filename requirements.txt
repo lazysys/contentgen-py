@@ -11,6 +11,7 @@ praw
 attrdict
 openai
 #tts
+Pillow
 
 
 #./lazycommon
