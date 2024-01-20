@@ -17,8 +17,8 @@ class PointCalculator:
 	
 	@property
 	def body_constraints(self) -> Tuple[int, int, int, int]:
-		offset_y = self.image.height*0.05
-		offset_x = self.image.width*0.05
+		offset_y = self.image.height*0.1
+		offset_x = self.image.width*0.1
 		return (offset_x, self.top_text[1] + offset_y, self.image.width - offset_x, self.bottom_text[1] - offset_y)
 
 @dataclass
@@ -29,9 +29,10 @@ class ImageEditor:
 	def points(self) -> PointCalculator:
 		return PointCalculator(self.image)
 	
+	def _offset_bbox(self, bbox: Tuple[int, int, int, int], x: int, y: int):
+		return [bbox[0] + x, bbox[1] + y, bbox[2] + x, bbox[3] + y]
 	def _is_bbox_valid(self, bbox: Tuple[int, int, int, int]):
 		return not (any(elem < 0 for elem in bbox) or (bbox[0] > self.image.width or bbox[2] > self.image.width) or (bbox[1] > self.image.height or bbox[3] > self.image.height))
-
 	def _is_bbox_within_constraints(self, bbox: Tuple[int, int, int, int], constraints: Tuple[int, int, int, int]):
 		return not any(bbox[i] > (constraints[i] or (self.image.width if i % 2 == 0 else self.image.height)) for i in range(len(bbox)))
 
@@ -63,19 +64,21 @@ class ImageEditor:
 				lines.append(line.strip())
 				line = word + " "
 		lines.append(line.strip())
-
+		
 		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] + line_spacing for line in lines)
+		if total_height > ((constraints[3] or image.height) - (constraints[1] or 0)):
+			return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color)
+
 		y -= total_height / 2
 
 		result = [0, 0, 0, 0]
 		count = 0
 		
-		# TODO: can be optimized by first calculating and ONLY drawing if it's a good fit (and we could omit the image copy at the start...)
 		for line in lines:
 			bbox = draw.textbbox((0, 0), line, font = font)
-			
+
 			if not (self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints)):
-				# NOTE: this has to be updated if the arguments get added/removed/updated/changed...
+				print("recursing, too big")
 				return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color)
 
 			if count == 0:
