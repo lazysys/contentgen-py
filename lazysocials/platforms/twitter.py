@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import List
 
 import tweepy
-from lazycommon.content_type import Content, Microblog, Thread
+from lazycommon.content_type import *
 
 from lazysocials.platforms.platform import Platform
 
@@ -31,8 +31,8 @@ class Twitter(Platform):
 		self._twitter_auth = auth
 		self.__post_init__()
 	
-	def __init__(self, _twitter_auth, types = None):
-		super().__init__(types or [Microblog])
+	def __init__(self, _twitter_auth, types):
+		super().__init__(types)
 		self._twitter_auth = _twitter_auth
 		self.__post_init__()
 

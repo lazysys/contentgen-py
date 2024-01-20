@@ -42,8 +42,8 @@ class Reddit(Platform):
 	def subreddits(self, subreddits: Dict[str, str]):
 		self._subreddits = [(self._client.subreddit(key), val) for key, val in subreddits.items()]
 
-	def __init__(self, _auth, subreddits: List[str], types: List[Type[Content]] = None):
-		super().__init__(types or [Microblog])
+	def __init__(self, _auth, subreddits: List[str], types: List[Type[Content]]):
+		super().__init__(types)
 		self._auth = _auth
 		self.__post_init__()
 		self._subreddits = []

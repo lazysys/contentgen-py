@@ -55,12 +55,12 @@ class OpenAISummarizer(Summarizer):
 
 	api: OpenAIChat
 	
-	def _convert_answer_to_std(answer: str) -> List[str]:
+	def _convert_answer_to_std(self, answer: str) -> List[str]:
 		lines = answer.split("\n")
 		title = lines[0].replace("Title: ")
 		content = "\n".join(lines[1:]).replace("Content: ", "")
 		return [title, content]
-	def _convert_carousel_to_std(answer: str) -> List[str]:
+	def _convert_carousel_to_std(self, answer: str) -> List[str]:
 		lines = answer.split("\n")
 		return [item.split(': ', 1)[1].strip() for item in lines if item.strip()]
 

@@ -6,6 +6,8 @@ from .templates.templates import CanvasTemplate
 
 from .font import FontType
 
+import tempfile
+
 @dataclass
 class LazyCanvas:
 	template: CanvasTemplate
@@ -20,6 +22,11 @@ class LazyCanvas:
 				center = editor.points.bottom_text, 
 				size = self.template.sizes["secondary"])
 		return editor.image
+	
+	def get_temp_file(self, img: Image) -> str:
+		file = tempfile.NamedTemporaryFile(delete=False, suffix=".png")
+		img.save(file.name)
+		return file.name
 
 	def master_slide(self, headline: str) -> Image:
 		editor = ImageEditor(self.template.backgrounds[0])
@@ -34,7 +41,7 @@ class LazyCanvas:
 		return self._branding(editor.image)
 	
 	def carousel_slide(self, text: str, index: int = None) -> Image:
-		editor = ImageEditor(self.template.backgrounds[1 if (index or 0) % 2 == 0 else 2])
+		editor = ImageEditor(self.template.backgrounds[1 if ((index or 0) % 2 == 0) else 2])
 		if not index == None:
 			editor.write_text(
 					str(index + 1), 

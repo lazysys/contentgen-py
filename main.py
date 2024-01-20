@@ -41,7 +41,8 @@ twitter = Twitter(
 		consumer_secret = os.getenv("TWITTER_CONSUMER_SECRET"),
 		access_token = os.getenv("TWITTER_ACCESS_TOKEN"),
 		access_token_secret = os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
-	)
+	),
+	types = [Microblog, Image, Carousel]
 )
 reddit = Reddit(
 	RedditAuth(
@@ -51,7 +52,8 @@ reddit = Reddit(
 		password = os.getenv("REDDIT_PASSWORD"),
 		user_agent = "LazyContent (by u/gregismotion)",
 	),
-	{"StableDiffusion": "News", "technology": "Artificial Intelligence", "artificial": "News"}
+	{"StableDiffusion": "News", "technology": "Artificial Intelligence", "artificial": "News"},
+	types = [Microblog]
 )
 platforms = [twitter]
 lazysocials = LazySocials(platforms)
@@ -60,8 +62,10 @@ entry = None
 while not entry:
 	entry = next(feedreaper)
 
-summary = summarizer.summarize([entry], Image)
-lazycanvas.master_slide(summary[0]).show()
-#content = Image(content = summary[0], image = lazycanvas.master_slide(summary[0]))
+summary = summarizer.summarize([entry], Carousel)
+images = [lazycanvas.master_slide(summary[0])] + [lazycanvas.carousel_slide(text, i) for i, text in enumerate(summary)]
+files = list(map(lazycanvas.get_temp_file, images))
 
-#lazysocials.publish(content)
+content = Carousel(content = summary[0], images = [Image(text, file) for text, file in zip(summary, files)])
+
+lazysocials.publish(content)
