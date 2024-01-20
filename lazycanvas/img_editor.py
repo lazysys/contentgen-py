@@ -1,55 +1,94 @@
-from PIL import Image, ImageFilter, ImageEnhance, ImageDraw, ImageFont
-import textwrap
+from PIL import Image, ImageDraw, ImageFont
 
+from dataclasses import dataclass
+from typing import Tuple
+
+@dataclass
+class PointCalculator:
+	image: Image
+
+	@property
+	def top_text(self) -> Tuple[int, int]:
+		return (self.image.width/2, self.image.height*0.075)
+
+	@property
+	def bottom_text(self) -> Tuple[int, int]:
+		return (self.image.width/2, self.image.height*(1-0.075))
+	
+	@property
+	def body_constraints(self) -> Tuple[int, int, int, int]:
+		offset_y = self.image.height*0.05
+		offset_x = self.image.width*0.05
+		return (offset_x, self.top_text[1] + offset_y, self.image.width - offset_x, self.bottom_text[1] - offset_y)
+
+@dataclass
 class ImageEditor:
-	def __init__(self, font_path, branding, aspect_ratio = (1, 1), blur_radius = 10, brightness = .25):
-		self.font_path = font_path
-		self.branding = branding
-		self.aspect_ratio = aspect_ratio
-		self.blur_radius = blur_radius
-		self.brightness = brightness
+	image: Image
+	
+	@property
+	def points(self) -> PointCalculator:
+		return PointCalculator(self.image)
+	
+	def _is_bbox_valid(self, bbox: Tuple[int, int, int, int]):
+		return not (any(elem < 0 for elem in bbox) or (bbox[0] > self.image.width or bbox[2] > self.image.width) or (bbox[1] > self.image.height or bbox[3] > self.image.height))
 
-	def crop_center(self, image):
-		width, height = image.size
-		new_aspect_ratio = float(self.aspect_ratio[0]) / self.aspect_ratio[1]
-		if float(width) / height > new_aspect_ratio:
-			new_size = (int(height * new_aspect_ratio), height)
-			left = (width - new_size[0]) / 2
-			top = 0
+	def _is_bbox_within_constraints(self, bbox: Tuple[int, int, int, int], constraints: Tuple[int, int, int, int]):
+		return not any(bbox[i] > (constraints[i] or (self.image.width if i % 2 == 0 else self.image.height)) for i in range(len(bbox)))
+
+	def write_text(self, text: str, 
+		size: int, 
+		center: Tuple[int, int] = None, 
+		constraints: Tuple[int, int, int, int] = (None, None, None, None),
+		color: Tuple[int, int, int] = (255, 255, 255),
+		line_spacing: int = 50, 
+	) -> Tuple[int, int, int, int]:
+		image = self.image.copy()
+		draw = ImageDraw.Draw(image)
+
+		font = ImageFont.truetype("gilroy.ttf", size)
+
+		if center is None:
+			x = image.width / 2
+			y = image.height / 2
 		else:
-			new_size = (width, int(width / new_aspect_ratio))
-			left = 0
-			top = (height - new_size[1]) / 2
-		right = left + new_size[0]
-		bottom = top + new_size[1]
-		return image.crop((int(left), int(top), int(right), int(bottom)))
-	def fade(self, image):
-		return ImageEnhance.Brightness(image).enhance(self.brightness)
-	def blur(self, image):
-		return image.filter(ImageFilter.GaussianBlur(radius=self.blur_radius))
-	def write_brand(self, image):
-		draw = ImageDraw.Draw(image)
-		font = ImageFont.truetype(self.font_path, 64)
+			x, y = center
 
-		bbox = (image.width / 2, image.height * .875)
-		text = self.branding
+		lines = []
+		line = ""
+		for word in text.split():
+			bbox = draw.textbbox((0, 0), line + word, font = font)
+			if self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints):
+				line += word + " "
+			else:
+				lines.append(line.strip())
+				line = word + " "
+		lines.append(line.strip())
 
-		draw.text(bbox, text, anchor="mm", font=font, fill=(217, 112, 74))
-		return image
-	def write_count(self, image, count):
-		draw = ImageDraw.Draw(image)
-		font = ImageFont.truetype(self.font_path, 64)
+		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] + line_spacing for line in lines)
+		y -= total_height / 2
 
-		bbox = (image.width / 2, image.height * (1 - .875))
+		result = [0, 0, 0, 0]
+		count = 0
+		
+		# TODO: can be optimized by first calculating and ONLY drawing if it's a good fit (and we could omit the image copy at the start...)
+		for line in lines:
+			bbox = draw.textbbox((0, 0), line, font = font)
+			
+			if not (self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints)):
+				# NOTE: this has to be updated if the arguments get added/removed/updated/changed...
+				return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color)
 
-		draw.text(bbox, str(count), anchor="mm", font=font, fill=(217, 112, 74))
-		return image
-	def write_text(self, image, text):
-		draw = ImageDraw.Draw(image)
-		font = ImageFont.truetype(self.font_path, 72)
+			if count == 0:
+				result[0] = bbox[0]
+				result[1] = bbox[1]
+			elif count == len(lines) - 1:
+				result[2] = bbox[2]
+				result[3] = bbox[3]
 
-		bbox = (image.width / 2, image.height / 2)	
-		text = "\n".join(textwrap.wrap(text, 30))
-
-		draw.text(bbox, text, anchor="mm", font=font, fill=(255, 255, 255))
-		return image
+			x = (image.width - bbox[2]) // 2
+			draw.text((x, y), line, font = font, fill = color)
+			y += bbox[3] + line_spacing
+			count += 1
+		
+		self.image = image
+		return tuple(result)

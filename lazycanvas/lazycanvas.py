@@ -1,90 +1,60 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
+from img_editor import ImageEditor
 
-from dataclasses import dataclass
+from abc import ABC, abstractmethod
 from typing import Tuple
+from dataclasses import dataclass
 
+class CanvasTemplate(ABC):
+	@property
+	@abstractmethod
+	def backgrounds(self) -> Tuple[Image, Image, Image]:
+		pass
+
+	@property
+	@abstractmethod
+	def color(self) -> Tuple[int, int, int]:
+		pass
 @dataclass
-class PointCalculator:
-	image: Image
+class CustomTemplate(CanvasTemplate):
+	_backgrounds: Tuple[str, str, str]
+	_color: Tuple[int, int, int]
 
 	@property
-	def top_text(self) -> Tuple[int, int]:
-		return (self.image.width/2, self.image.height*0.075)
+	def backgrounds(self):
+		return tuple(map(Image.open, self._backgrounds)) 
 
 	@property
-	def bottom_text(self) -> Tuple[int, int]:
-		return (self.image.width/2, self.image.height*(1-0.075))
-
+	def color(self):
+		return self._color
 @dataclass
-class ImageEditor:
-	image: Image
+class LazyCanvas:
+	template: CanvasTemplate
+	branding: str
 	
-	@property
-	def points(self) -> PointCalculator:
-		return PointCalculator(self.image)
+	def _branding(self, img: Image) -> Image:
+		editor = ImageEditor(img)
+		editor.write_text(self.branding, color = self.template.color, center = editor.points.bottom_text, size = 75)
+		return editor.image
+
+	def master_slide(self, headline: str) -> Image:
+		editor = ImageEditor(self.template.backgrounds[0])
+		editor.write_text(headline, color = self.template.color, size = 275, constraints = editor.points.body_constraints)
+		return self._branding(editor.image)
 	
-	def write_text(self, text: str, 
-		center: Tuple[int, int] = None, 
-		constraints: Tuple[int, int] = (None, None), 
-		line_spacing: int = 50, 
-		size: int = 275, 
-		color: Tuple[int, int, int] = (255, 255, 255)
-	) -> Tuple[Tuple[int, int], Tuple[int, int]]:
-		image = self.image.copy()
-		draw = ImageDraw.Draw(image)
+	def carousel_slide(self, text: str, index: int = None) -> Image:
+		editor = ImageEditor(self.template.backgrounds[1 if (index or 0) % 2 == 0 else 2])
+		if not index == None:
+			editor.write_text(str(index + 1), color = self.template.color, center = editor.points.top_text, size = 75)
+		editor.write_text(text, color = self.template.color, size = 150, constraints = editor.points.body_constraints)
+		return self._branding(editor.image)
 
-		font = ImageFont.truetype("gilroy.ttf", size)
 
-		if center is None:
-			x = image.width / 2
-			y = image.height / 2
-		else:
-			x, y = center
+lazycanvas = LazyCanvas(CustomTemplate(("background0.png", "background1.png", "background2.png"), (0, 255, 255)), "@gregismotion")
 
-		lines = []
-		line = ""
-		for word in text.split():
-			if draw.textbbox((0, 0), line + word, font = font)[2] <= (constraints[0] or image.width):
-				line += word + " "
-			else:
-				lines.append(line.strip())
-				line = word + " "
-		lines.append(line.strip())
+lazycanvas.master_slide("HOW AI WILL TAKE OVER THE WORLD").show()
+#lazycanvas.carousel_slide("AI is literally going to replace you. There's no escape.").show()
+#lazycanvas.carousel_slide("AI is literally going to replace you. There's no escape.", 0).show()
+lazycanvas.carousel_slide("Lorem ipsum dolor sit amet?", 1).show()
+lazycanvas.carousel_slide("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", 2).show()
 
-		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] + line_spacing for line in lines)
-		y -= total_height / 2
-
-		result = [(0, 0), (0, 0)]
-		count = 0
-		
-		# TODO: can be optimized by first calculating and ONLY drawing if it's a good fit (and we could omit the image copy at the start...)
-		for line in lines:
-			line_bbox = draw.textbbox((0, 0), line, font = font)
-			
-			if line_bbox[3] + y >= (constraints[1] or self.image.height) or line_bbox[3] < 0:
-				# NOTE: this has to be updated if the arguments get added/removed/updated/changed...
-				# I didn't use named arguments so it breaks for an order change, intentional
-				return self.write_text(text, center, constraints, line_spacing, size - 1, color)
-
-			if count == 0:
-				result[0] = (line_bbox[0], line_bbox[1])
-			elif count == len(lines) - 1:
-				result[1] = (line_bbox[2], line_bbox[3])
-
-			x = (image.width - line_bbox[2]) // 2
-			draw.text((x, y), line, font = font, fill = color)
-			y += line_bbox[3] + line_spacing
-			count += 1
-		
-		self.image = image
-		return tuple(result)
-		
-with Image.open("background0.png") as im:
-	editor = ImageEditor(im)
-	
-	color = (0, 255, 255)
-	editor.write_text("Unveiling the Tech Giants: Shades of Good and Evil.", color = color)
-	editor.write_text("1", color = color, center = editor.points.top_text, size = 75)
-	editor.write_text("@gregismotion", color = color, center = editor.points.bottom_text, size = 75)
-
-	editor.image.show()
