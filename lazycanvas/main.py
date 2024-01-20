@@ -1,7 +1,7 @@
 from lazycanvas import LazyCanvas
-from templates import CustomTemplate
+from templates.folder import FolderTemplate
 
-lazycanvas = LazyCanvas(CustomTemplate(("background0.png", "background1.png", "background2.png"), (0, 255, 255)), "@gregismotion")
+lazycanvas = LazyCanvas(FolderTemplate("alpha"), "@gregismotion")
 
 lazycanvas.master_slide("HOW AI WILL TAKE OVER THE WORLD").show()
 lazycanvas.carousel_slide("AI is literally going to replace you. There's no escape.").show()

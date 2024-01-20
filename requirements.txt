@@ -12,6 +12,7 @@ attrdict
 openai
 #tts
 Pillow
+pyyaml
 
 
 #./lazycommon

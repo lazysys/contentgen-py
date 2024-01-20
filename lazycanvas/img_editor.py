@@ -1,7 +1,9 @@
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 
 from dataclasses import dataclass
 from typing import Tuple
+
+from font import Font, FontType
 
 @dataclass
 class PointCalculator:
@@ -37,7 +39,8 @@ class ImageEditor:
 		return not any(bbox[i] > (constraints[i] or (self.image.width if i % 2 == 0 else self.image.height)) for i in range(len(bbox)))
 
 	def write_text(self, text: str, 
-		size: int, 
+		size: int,
+		font: Font,
 		center: Tuple[int, int] = None, 
 		constraints: Tuple[int, int, int, int] = (None, None, None, None),
 		color: Tuple[int, int, int] = (255, 255, 255),
@@ -45,8 +48,8 @@ class ImageEditor:
 	) -> Tuple[int, int, int, int]:
 		image = self.image.copy()
 		draw = ImageDraw.Draw(image)
-
-		font = ImageFont.truetype("gilroy.ttf", size)
+		
+		_font = font.get(size, FontType.NORMAL)
 
 		if center is None:
 			x = image.width / 2
@@ -57,7 +60,7 @@ class ImageEditor:
 		lines = []
 		line = ""
 		for word in text.split():
-			bbox = draw.textbbox((0, 0), line + word, font = font)
+			bbox = draw.textbbox((0, 0), line + word, font = _font)
 			if self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints):
 				line += word + " "
 			else:
@@ -65,9 +68,9 @@ class ImageEditor:
 				line = word + " "
 		lines.append(line.strip())
 		
-		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] + line_spacing for line in lines)
+		total_height = sum(draw.textbbox((0, 0), line, font = _font)[3] + line_spacing for line in lines)
 		if total_height > ((constraints[3] or image.height) - (constraints[1] or 0)):
-			return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color)
+			return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color, font=font)
 
 		y -= total_height / 2
 
@@ -75,11 +78,11 @@ class ImageEditor:
 		count = 0
 		
 		for line in lines:
-			bbox = draw.textbbox((0, 0), line, font = font)
-
-			if not (self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints)):
-				print("recursing, too big")
-				return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color)
+			bbox = draw.textbbox((0, 0), line, font = _font)
+			
+			# NOTE: this is probably useless(?), plus breaks stuff
+			#if not (self._is_bbox_valid(bbox) and self._is_bbox_within_constraints(bbox, constraints)):
+			#	return self.write_text(text=text, center=center, constraints=constraints, line_spacing=line_spacing, size = size - 1, color=color, font=font)
 
 			if count == 0:
 				result[0] = bbox[0]
@@ -89,7 +92,7 @@ class ImageEditor:
 				result[3] = bbox[3]
 
 			x = (image.width - bbox[2]) // 2
-			draw.text((x, y), line, font = font, fill = color)
+			draw.text((x, y), line, font = _font, fill = color)
 			y += bbox[3] + line_spacing
 			count += 1
 		
