@@ -5,9 +5,9 @@ import os
 from PIL import Image
 import yaml
 
-from templates.templates import CanvasTemplate
+from ..templates.templates import CanvasTemplate
 
-from font import Font
+from ..font import Font
 
 @dataclass
 class FolderTemplate(CanvasTemplate):

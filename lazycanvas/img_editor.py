@@ -3,7 +3,7 @@ from PIL import Image, ImageDraw
 from dataclasses import dataclass
 from typing import Tuple
 
-from font import Font, FontType
+from lazycanvas.font import Font, FontType
 
 @dataclass
 class PointCalculator:

@@ -11,11 +11,16 @@ from lazysocials.lazysocials import LazySocials
 from lazysocials.platforms.twitter import Twitter, TwitterAuth
 from lazysocials.platforms.reddit import Reddit, RedditAuth
 
+from lazycanvas.lazycanvas import LazyCanvas
+from lazycanvas.templates.folder import FolderTemplate
+
 load_dotenv()
+
+branding = os.getenv("BRANDING")
 
 # FeedReaper
 storage_config = StorageConfig(os.getenv("FEEDS_FILE"), os.getenv("USED_FILE"))
-reaper = FeedReaper(storage_config)
+feedreaper = FeedReaper(storage_config)
 
 # LazySummary
 key = os.getenv("OPENAI_KEY")
@@ -23,7 +28,8 @@ api = OpenAIChat(key)
 summarizer = OpenAISummarizer(api)
 
 # LazyCanvas
-# TODO: implement
+template = FolderTemplate(os.getenv("LAZYCANVAS_TEMPLATE_FOLDER"))
+lazycanvas = LazyCanvas(template, f"@{branding}")
 
 # LazyVideo
 # TODO: implement
@@ -47,14 +53,15 @@ reddit = Reddit(
 	),
 	{"StableDiffusion": "News", "technology": "Artificial Intelligence", "artificial": "News"}
 )
-platforms = [reddit]
+platforms = [twitter]
 lazysocials = LazySocials(platforms)
 
 entry = None
 while not entry:
-	entry = next(reaper)
+	entry = next(feedreaper)
 
-summary = summarizer.summarize([entry], Microblog)
-content = Microblog(summary[0], [entry.thumbnail])
+summary = summarizer.summarize([entry], Image)
+lazycanvas.master_slide(summary[0]).show()
+#content = Image(content = summary[0], image = lazycanvas.master_slide(summary[0]))
 
-lazysocials.publish(content)
+#lazysocials.publish(content)

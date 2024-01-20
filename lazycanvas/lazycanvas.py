@@ -1,10 +1,10 @@
 from PIL import Image
-from img_editor import ImageEditor
+from .img_editor import ImageEditor
 from dataclasses import dataclass
 
-from templates.templates import CanvasTemplate
+from .templates.templates import CanvasTemplate
 
-from font import FontType
+from .font import FontType
 
 @dataclass
 class LazyCanvas:

@@ -3,7 +3,7 @@ from PIL import Image
 from typing import Tuple, Dict
 from dataclasses import dataclass
 
-from font import Font
+from ..font import Font
 
 class CanvasTemplate(ABC):
 	@property
