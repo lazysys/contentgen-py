@@ -8,8 +8,12 @@ class PointCalculator:
 	image: Image
 
 	@property
-	def top_text(self):
-		pass
+	def top_text(self) -> Tuple[int, int]:
+		return (self.image.width/2, self.image.height*0.075)
+
+	@property
+	def bottom_text(self) -> Tuple[int, int]:
+		return (self.image.width/2, self.image.height*(1-0.075))
 
 @dataclass
 class ImageEditor:
@@ -18,7 +22,7 @@ class ImageEditor:
 	@property
 	def points(self) -> PointCalculator:
 		return PointCalculator(self.image)
-
+	
 	def write_text(self, text: str, 
 		center: Tuple[int, int] = None, 
 		constraints: Tuple[int, int] = (None, None), 
@@ -47,8 +51,8 @@ class ImageEditor:
 				line = word + " "
 		lines.append(line.strip())
 
-		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] for line in lines)
-		y = y - total_height // 2
+		total_height = sum(draw.textbbox((0, 0), line, font = font)[3] + line_spacing for line in lines)
+		y -= total_height / 2
 
 		result = [(0, 0), (0, 0)]
 		count = 0
@@ -79,8 +83,8 @@ with Image.open("background0.png") as im:
 	editor = ImageEditor(im)
 	
 	color = (0, 255, 255)
-	editor.write_text("Unveiling the Tech Giants: Shades of Good and Evil.aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa  aaaa ", color = color)
-	#editor.write_text("Unveiling the Tech Giants: Shades of Good and Evil.", color = (0, 255, 255))
-	editor.write_text("@gregismotion", color = color, center = (0, 1800), size = 75)
+	editor.write_text("Unveiling the Tech Giants: Shades of Good and Evil.", color = color)
+	editor.write_text("1", color = color, center = editor.points.top_text, size = 75)
+	editor.write_text("@gregismotion", color = color, center = editor.points.bottom_text, size = 75)
 
 	editor.image.show()
