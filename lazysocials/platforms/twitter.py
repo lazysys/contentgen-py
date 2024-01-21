@@ -22,6 +22,7 @@ class TwitterAuth:
 @dataclass
 class Twitter(Platform):
 	_twitter_auth: TwitterAuth
+	max_images: int = 4
 		
 	@property
 	def twitter_auth(self):
@@ -50,26 +51,26 @@ class Twitter(Platform):
 		    access_token_secret = self._twitter_auth.access_token_secret
 		))
 	
-	def _images_to_media_ids(self, images: List[str]) -> List[str]:
+	def _medias_to_media_ids(self, medias: List[str]) -> List[str]:
 		ids = []
-		for image in images:
-			if image:
-				ids.append(self._old_client.media_upload(image).media_id_string)
+		for media in medias:
+			if media:
+				ids.append(self._old_client.media_upload(media).media_id_string)
 		if len(ids) < 1:
 			ids = None
 		return ids
 
-	def _publish(self, content: str, images: List[str], in_reply_to: str = None) -> str:
+	def _publish(self, content: str, medias: List[str] = [], in_reply_to: str = None) -> str:
 		while True:
 			try:
-				response = self._client.create_tweet(text = content, media_ids = self._images_to_media_ids(images), in_reply_to_tweet_id = in_reply_to)
+				response = self._client.create_tweet(text = content, media_ids = self._medias_to_media_ids(medias), in_reply_to_tweet_id = in_reply_to)
 				return len(response.errors) < 1
 			except tweepy.errors.HTTPException as e:
 				if "Payload too large" in str(e): # TODO: compress images
-					print("Payload too large!")
-				elif "maximum of 4 items" in str(e):
-					print("Too many images!")
-					images = images[:4]
+					print("Twitter: CRITICAL FAILURE: Payload too large! TODO: IMPLEMENT IMAGE/VIDEO COMPRESSION")
+				elif f"maximum of {str(max_images)} items" in str(e):
+					print(f"Twitter: WARNING: will cut down media count to {str(max_images)} (max.)!")
+					medias = medias[:max_images]
 					continue
 				else:
 					print(str(e))
@@ -79,17 +80,29 @@ class Twitter(Platform):
 	def publish(self, content: Content) -> bool:
 		if super().publish(content):
 			if isinstance(content, Microblog):
-				return bool(self._publish(content.content, content.images))
+				return bool(self._publish(content.content, medias = content.images))
 			elif isinstance(content, Thread):
-				last_tweet = None
+				images = content.images
+				last_tweet = self._publish(content, medias = [images.pop() for _ in range(max_images)])
 				for microblog in content.microblogs:
-					last_tweet = self._publish(microblog.content, microblog.images, last_tweet)
+					current_images = microblog.images
+					last_tweet = self._publish(
+							microblog.content, 
+							medias = [current_images.pop() for _ in range(min(len(current_images), 4))] + 
+							[images.pop() for _ in range(max(0, max_images - len(current_images)))], 
+							in_reply_to = last_tweet
+					)
+					images += current_images
+				if len(images) > 0:
+					print("Twitter: WARNING: Left-over images from thread, dropping them!")
 				return bool(last_tweet)
 			elif isinstance(content, Article):
-				raise UnimplementedError
+				return bool(self._publish(content.content))
 			elif isinstance(content, Image):
-				return bool(self._publish(content.content, [content.image]))
+				return bool(self._publish(content.content, medias = [content.image]))
 			elif isinstance(content, Carousel):
-				return bool(self._publish(content.content, [img.image for img in content.images]))
+				return bool(self._publish(content.content, medias = [img.image for img in content.images]))
+			elif isinstance(content, Video):
+				return bool(self._publish(content.content, medias = [content.video]))
 			else:
 				return False
