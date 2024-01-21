@@ -136,5 +136,7 @@ class Reddit(Platform):
 				return self._publish(content.content, [content.image])
 			elif isinstance(content, Carousel):
 				return self._publish(content.content, [img.image for img in content.images])
+			elif isinstance(content, Video): # TODO: reddit video posting
+				raise UnimplementedError
 			else:
 				return False
