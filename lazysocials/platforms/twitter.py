@@ -68,9 +68,9 @@ class Twitter(Platform):
 			except tweepy.errors.HTTPException as e:
 				if "Payload too large" in str(e): # TODO: compress images
 					print("Twitter: CRITICAL FAILURE: Payload too large! TODO: IMPLEMENT IMAGE/VIDEO COMPRESSION")
-				elif f"maximum of {str(max_images)} items" in str(e):
-					print(f"Twitter: WARNING: will cut down media count to {str(max_images)} (max.)!")
-					medias = medias[:max_images]
+				elif f"maximum of {str(self.max_images)} items" in str(e):
+					print(f"Twitter: WARNING: will cut down media count to {str(self.max_images)} (max.)!")
+					medias = medias[:self.max_images]
 					continue
 				else:
 					print(str(e))
@@ -83,13 +83,13 @@ class Twitter(Platform):
 				return bool(self._publish(content.content, medias = content.images))
 			elif isinstance(content, Thread):
 				images = content.images
-				last_tweet = self._publish(content, medias = [images.pop() for _ in range(max_images)])
+				last_tweet = self._publish(content, medias = [images.pop() for _ in range(self.max_images)])
 				for microblog in content.microblogs:
 					current_images = microblog.images
 					last_tweet = self._publish(
 							microblog.content, 
 							medias = [current_images.pop() for _ in range(min(len(current_images), 4))] + 
-							[images.pop() for _ in range(max(0, max_images - len(current_images)))], 
+							[images.pop() for _ in range(max(0, self.max_images - len(current_images)))], 
 							in_reply_to = last_tweet
 					)
 					images += current_images
