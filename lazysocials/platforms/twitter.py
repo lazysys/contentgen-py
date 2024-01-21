@@ -60,13 +60,20 @@ class Twitter(Platform):
 		return ids
 
 	def _publish(self, content: str, images: List[str], in_reply_to: str = None) -> str:
-		try:
-			response = self._client.create_tweet(text = content, media_ids = self._images_to_media_ids(images), in_reply_to_tweet_id = in_reply_to)
-			return len(response.errors) < 1
-		except tweepy.errors.HTTPException as e:
-			if "Payload too large" in str(e):
-				pass # TODO: compress images
-			return None
+		while True:
+			try:
+				response = self._client.create_tweet(text = content, media_ids = self._images_to_media_ids(images), in_reply_to_tweet_id = in_reply_to)
+				return len(response.errors) < 1
+			except tweepy.errors.HTTPException as e:
+				if "Payload too large" in str(e): # TODO: compress images
+					print("Payload too large!")
+				elif "maximum of 4 items" in str(e):
+					print("Too many images!")
+					images = images[:4]
+					continue
+				else:
+					print(str(e))
+				return None
 		
 
 	def publish(self, content: Content) -> bool:
