@@ -7,12 +7,12 @@ class Content:
 
 @dataclass
 class Microblog(Content):
-	images: List[str]
+	images: List[str] = None
 # NOTE: don't you dare inherit Microblog from Thread, that might feel cool now but imagine the implications...
 @dataclass
 class Thread(Content):
-	microblogs: List[Microblog]
-	images: List[str]
+	microblogs: List[Microblog] = None
+	images: List[str] = None
 
 @dataclass
 class Article(Content):

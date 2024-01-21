@@ -57,7 +57,7 @@ class OpenAISummarizer(Summarizer):
 	
 	def _convert_answer_to_std(self, answer: str) -> List[str]:
 		lines = answer.split("\n")
-		title = lines[0].replace("Title: ")
+		title = lines[0].replace("Title: ", "")
 		content = "\n".join(lines[1:]).replace("Content: ", "")
 		return [title, content]
 	def _convert_carousel_to_std(self, answer: str) -> List[str]:
