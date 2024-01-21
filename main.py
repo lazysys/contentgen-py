@@ -7,9 +7,6 @@ from lazysummary.openai import OpenAISummarizer, OpenAIChat
 
 from lazycommon.content_type import *
 
-from lazysocials.lazysocials import LazySocials
-from lazysocials.platforms.twitter import Twitter, TwitterAuth
-from lazysocials.platforms.reddit import Reddit, RedditAuth
 
 from lazycanvas.lazycanvas import LazyCanvas
 from lazycanvas.templates.folder import FolderTemplate
@@ -35,6 +32,10 @@ lazycanvas = LazyCanvas(template, f"@{branding}")
 # TODO: implement
 
 # LazySocials
+from lazysocials.lazysocials import LazySocials
+
+'''
+from lazysocials.platforms.twitter import Twitter, TwitterAuth
 twitter = Twitter(
 	TwitterAuth(
 		consumer_key = os.getenv("TWITTER_CONSUMER_KEY"),
@@ -44,6 +45,10 @@ twitter = Twitter(
 	),
 	types = [Microblog, Image, Carousel]
 )
+'''
+
+'''
+from lazysocials.platforms.reddit import Reddit, RedditAuth
 reddit = Reddit(
 	RedditAuth(
 		client_id = os.getenv("REDDIT_CLIENT_ID"),
@@ -55,14 +60,27 @@ reddit = Reddit(
 	{"StableDiffusion": "News", "technology": "Artificial Intelligence", "artificial": "News"},
 	types = [Microblog]
 )
-platforms = [twitter]
+'''
+
+from lazysocials.platforms.Local import Local
+local = Local("local")
+
+platforms = [local]
 lazysocials = LazySocials(platforms)
 
 entry = None
 while not entry:
 	entry = next(feedreaper)
 
-summary = summarizer.summarize([entry], Carousel)
+# FIXME: wbu duplicate images?
+images = [entry.thumbnail] + entry.images + entry.related_images
+
+microblog = summarizer.summarize([entry], Microblog)
+microblog = Microblog(microblog, images)
+
+thread = summarizer.summarize([entry], Thread)
+thread = Thread(thread[0], Microblog(microblog, images))
+
 images = [lazycanvas.master_slide(summary[0])] + [lazycanvas.carousel_slide(text, i) for i, text in enumerate(summary)]
 files = list(map(lazycanvas.get_temp_file, images))
 
