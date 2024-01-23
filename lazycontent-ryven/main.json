@@ -1,0 +1,439 @@
+{
+    "general info": {
+        "type": "Ryven project file",
+        "ryven version": "3.4.3"
+    },
+    "required packages": [
+        {
+            "name": "feedreaper",
+            "dir": "/home/freenormie/Documents/contentgen-py/lazycontent-ryven/nodes/feedreaper"
+        },
+        {
+            "name": "dotenv-ryven",
+            "dir": "/home/freenormie/Documents/contentgen-py/lazycontent-ryven/nodes/dotenv-ryven"
+        }
+    ],
+    "GID": 2,
+    "version": "0.4.0",
+    "flows": {
+        "main": {
+            "GID": 5,
+            "algorithm mode": "data",
+            "nodes": [
+                {
+                    "GID": 6,
+                    "identifier": "feedreaper.FeedReaperNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 10,
+                            "type": "data",
+                            "label": "StorageConfig",
+                            "has widget": false
+                        },
+                        {
+                            "GID": 11,
+                            "type": "data",
+                            "label": "Count",
+                            "default": {
+                                "GID": 14,
+                                "identifier": "Data",
+                                "serialized": "gARLAS4="
+                            },
+                            "has widget": true,
+                            "widget name": "Count",
+                            "widget pos": "besides",
+                            "widget data": "gASVDgAAAAAAAAB9lIwFdmFsdWWUSwFzLg=="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 13,
+                            "type": "data",
+                            "label": "Entries"
+                        }
+                    ],
+                    "pos x": 461.0,
+                    "pos y": 377.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "FeedReaper"
+                },
+                {
+                    "GID": 15,
+                    "identifier": "dotenv-ryven.DotEnvVarNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 18,
+                            "type": "data",
+                            "label": "Key",
+                            "default": {
+                                "GID": 21,
+                                "identifier": "Data",
+                                "serialized": "gASVDgAAAAAAAACMCkZFRURTX0ZJTEWULg=="
+                            },
+                            "has widget": true,
+                            "widget name": "Key",
+                            "widget pos": "besides",
+                            "widget data": "gASVGAAAAAAAAAB9lIwEdGV4dJSMCkZFRURTX0ZJTEWUcy4="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 20,
+                            "type": "data",
+                            "label": "Value"
+                        }
+                    ],
+                    "pos x": 127.0,
+                    "pos y": 206.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "DotEnv variable"
+                },
+                {
+                    "GID": 22,
+                    "identifier": "dotenv-ryven.DotEnvVarNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 25,
+                            "type": "data",
+                            "label": "Key",
+                            "default": {
+                                "GID": 28,
+                                "identifier": "Data",
+                                "serialized": "gASVDQAAAAAAAACMCVVTRURfRklMRZQu"
+                            },
+                            "has widget": true,
+                            "widget name": "Key",
+                            "widget pos": "besides",
+                            "widget data": "gASVFwAAAAAAAAB9lIwEdGV4dJSMCVVTRURfRklMRZRzLg=="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 27,
+                            "type": "data",
+                            "label": "Value"
+                        }
+                    ],
+                    "pos x": 125.0,
+                    "pos y": 370.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "DotEnv variable"
+                },
+                {
+                    "GID": 29,
+                    "identifier": "feedreaper.FeedReaperStorageConfigNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 33,
+                            "type": "data",
+                            "label": "Feeds file",
+                            "has widget": false
+                        },
+                        {
+                            "GID": 34,
+                            "type": "data",
+                            "label": "Used file",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 35,
+                            "type": "data",
+                            "label": "StorageConfig"
+                        }
+                    ],
+                    "pos x": 433.0,
+                    "pos y": 299.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "FeedReaper Storage Config"
+                },
+                {
+                    "GID": 36,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 38,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 448.0,
+                    "pos y": 468.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 39,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 41,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 102.0,
+                    "pos y": 281.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 42,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 44,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 110.0,
+                    "pos y": 432.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                }
+            ],
+            "connections": [
+                {
+                    "parent node index": 0,
+                    "output port index": 0,
+                    "connected node": 4,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 1,
+                    "output port index": 0,
+                    "connected node": 3,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 1,
+                    "output port index": 0,
+                    "connected node": 5,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 2,
+                    "output port index": 0,
+                    "connected node": 3,
+                    "connected input port index": 1
+                },
+                {
+                    "parent node index": 2,
+                    "output port index": 0,
+                    "connected node": 6,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 3,
+                    "output port index": 0,
+                    "connected node": 0,
+                    "connected input port index": 0
+                }
+            ],
+            "output data": [
+                {
+                    "data": {
+                        "GID": 45,
+                        "identifier": "Data",
+                        "serialized": "gASVBQAAAAAAAABdlE5hLg=="
+                    },
+                    "dependent node outputs": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 46,
+                        "identifier": "Data",
+                        "serialized": "gASVDgAAAAAAAACMCmZlZWRzLm9wbWyULg=="
+                    },
+                    "dependent node outputs": [
+                        1,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 47,
+                        "identifier": "Data",
+                        "serialized": "gASVDAAAAAAAAACMCHVzZWQudHh0lC4="
+                    },
+                    "dependent node outputs": [
+                        2,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 48,
+                        "identifier": "Data",
+                        "serialized": "gASVbwAAAAAAAACMIWxhenljb250ZW50LmZlZWRyZWFwZXIuZmVlZHJlYXBlcpSMDVN0b3JhZ2VDb25maWeUk5QpgZR9lCiMCWZlZWRfZmlsZZSMCmZlZWRzLm9wbWyUjAl1c2VkX2ZpbGWUjAh1c2VkLnR4dJR1Yi4="
+                    },
+                    "dependent node outputs": [
+                        3,
+                        0
+                    ]
+                }
+            ],
+            "flow view": {
+                "drawings": [],
+                "view size": [
+                    10000.0,
+                    7000.0
+                ]
+            }
+        }
+    },
+    "addons": {
+        "Logging": {
+            "GID": 3,
+            "version": "0.0.1",
+            "custom state": {}
+        },
+        "Variables": {
+            "GID": 4,
+            "version": "0.4",
+            "custom state": {
+                "5": {}
+            }
+        }
+    }
+}

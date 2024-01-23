@@ -1,0 +1,612 @@
+{
+    "general info": {
+        "type": "Ryven project file",
+        "ryven version": "3.4.3"
+    },
+    "required packages": [
+        {
+            "name": "lazysummary",
+            "dir": "/home/freenormie/Documents/contentgen-py/lazycontent-ryven/nodes/lazysummary"
+        },
+        {
+            "name": "dotenv-ryven",
+            "dir": "/home/freenormie/Documents/contentgen-py/lazycontent-ryven/nodes/dotenv-ryven"
+        },
+        {
+            "name": "feedreaper",
+            "dir": "/home/freenormie/Documents/contentgen-py/lazycontent-ryven/nodes/feedreaper"
+        }
+    ],
+    "GID": 2,
+    "version": "0.4.0",
+    "flows": {
+        "main": {
+            "GID": 5,
+            "algorithm mode": "data",
+            "nodes": [
+                {
+                    "GID": 6,
+                    "identifier": "feedreaper.FeedReaperNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 10,
+                            "type": "data",
+                            "label": "StorageConfig",
+                            "has widget": false
+                        },
+                        {
+                            "GID": 11,
+                            "type": "data",
+                            "label": "Count",
+                            "default": {
+                                "GID": 116,
+                                "identifier": "Data",
+                                "serialized": "gARLAS4="
+                            },
+                            "has widget": true,
+                            "widget name": "Count",
+                            "widget pos": "besides",
+                            "widget data": "gASVDgAAAAAAAAB9lIwFdmFsdWWUSwFzLg=="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 13,
+                            "type": "data",
+                            "label": "Entries"
+                        }
+                    ],
+                    "pos x": 424.0,
+                    "pos y": 368.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "FeedReaper"
+                },
+                {
+                    "GID": 15,
+                    "identifier": "dotenv-ryven.DotEnvVarNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 18,
+                            "type": "data",
+                            "label": "Key",
+                            "default": {
+                                "GID": 21,
+                                "identifier": "Data",
+                                "serialized": "gASVDgAAAAAAAACMCkZFRURTX0ZJTEWULg=="
+                            },
+                            "has widget": true,
+                            "widget name": "Key",
+                            "widget pos": "besides",
+                            "widget data": "gASVGAAAAAAAAAB9lIwEdGV4dJSMCkZFRURTX0ZJTEWUcy4="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 20,
+                            "type": "data",
+                            "label": "Value"
+                        }
+                    ],
+                    "pos x": 127.0,
+                    "pos y": 206.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "DotEnv variable"
+                },
+                {
+                    "GID": 22,
+                    "identifier": "dotenv-ryven.DotEnvVarNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 25,
+                            "type": "data",
+                            "label": "Key",
+                            "default": {
+                                "GID": 28,
+                                "identifier": "Data",
+                                "serialized": "gASVDQAAAAAAAACMCVVTRURfRklMRZQu"
+                            },
+                            "has widget": true,
+                            "widget name": "Key",
+                            "widget pos": "besides",
+                            "widget data": "gASVFwAAAAAAAAB9lIwEdGV4dJSMCVVTRURfRklMRZRzLg=="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 27,
+                            "type": "data",
+                            "label": "Value"
+                        }
+                    ],
+                    "pos x": 125.0,
+                    "pos y": 370.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "DotEnv variable"
+                },
+                {
+                    "GID": 29,
+                    "identifier": "feedreaper.FeedReaperStorageConfigNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 33,
+                            "type": "data",
+                            "label": "Feeds file",
+                            "has widget": false
+                        },
+                        {
+                            "GID": 34,
+                            "type": "data",
+                            "label": "Used file",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 35,
+                            "type": "data",
+                            "label": "StorageConfig"
+                        }
+                    ],
+                    "pos x": 401.0,
+                    "pos y": 287.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "FeedReaper Storage Config"
+                },
+                {
+                    "GID": 36,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 38,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 426.0,
+                    "pos y": 445.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 39,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 41,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 102.0,
+                    "pos y": 281.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 42,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 44,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 110.0,
+                    "pos y": 432.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 60,
+                    "identifier": "lazysummary.OpenAISummarizerNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 61,
+                            "type": "data",
+                            "label": "OpenAI Chat API",
+                            "has widget": false
+                        },
+                        {
+                            "GID": 62,
+                            "type": "data",
+                            "label": "Content type",
+                            "default": {
+                                "GID": 111,
+                                "identifier": "Data",
+                                "serialized": "gASVDQAAAAAAAACMCU1pY3JvYmxvZ5Qu"
+                            },
+                            "has widget": true,
+                            "widget name": "ContentType",
+                            "widget pos": "besides",
+                            "widget data": "gASVFwAAAAAAAAB9lIwEdGV4dJSMCU1pY3JvYmxvZ5RzLg=="
+                        },
+                        {
+                            "GID": 63,
+                            "type": "data",
+                            "label": "Entries",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 64,
+                            "type": "data",
+                            "label": "Summary"
+                        }
+                    ],
+                    "pos x": 931.0,
+                    "pos y": 381.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "OpenAI Summarizer"
+                },
+                {
+                    "GID": 65,
+                    "version": "v0.2",
+                    "identifier": "built_in.Result_Node",
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 66,
+                            "type": "data",
+                            "label": "",
+                            "has widget": false
+                        }
+                    ],
+                    "outputs": [],
+                    "pos x": 1173.0,
+                    "pos y": 506.0,
+                    "main widget data": "gAR9lC4=",
+                    "unconnected ports hidden": false,
+                    "collapsed": false,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "result"
+                },
+                {
+                    "GID": 67,
+                    "identifier": "dotenv-ryven.DotEnvVarNode",
+                    "version": null,
+                    "state data": "gAR9lC4=",
+                    "additional data": {},
+                    "inputs": [
+                        {
+                            "GID": 70,
+                            "type": "data",
+                            "label": "Key",
+                            "default": {
+                                "GID": 105,
+                                "identifier": "Data",
+                                "serialized": "gASVDgAAAAAAAACMCk9QRU5BSV9LRVmULg=="
+                            },
+                            "has widget": true,
+                            "widget name": "Key",
+                            "widget pos": "besides",
+                            "widget data": "gASVGAAAAAAAAAB9lIwEdGV4dJSMCk9QRU5BSV9LRVmUcy4="
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "GID": 72,
+                            "type": "data",
+                            "label": "Value"
+                        }
+                    ],
+                    "pos x": 883.0,
+                    "pos y": 257.0,
+                    "unconnected ports hidden": false,
+                    "collapsed": true,
+                    "actions": {
+                        "update shape": {
+                            "method": "update_shape"
+                        },
+                        "hide unconnected ports": {
+                            "method": "hide_unconnected_ports"
+                        },
+                        "change title": {
+                            "method": "change_title"
+                        },
+                        "console ref": {
+                            "method": "console_ref_monkeypatch"
+                        }
+                    },
+                    "display title": "OpenAI Key"
+                }
+            ],
+            "connections": [
+                {
+                    "parent node index": 0,
+                    "output port index": 0,
+                    "connected node": 4,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 0,
+                    "output port index": 0,
+                    "connected node": 7,
+                    "connected input port index": 2
+                },
+                {
+                    "parent node index": 1,
+                    "output port index": 0,
+                    "connected node": 3,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 1,
+                    "output port index": 0,
+                    "connected node": 5,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 2,
+                    "output port index": 0,
+                    "connected node": 3,
+                    "connected input port index": 1
+                },
+                {
+                    "parent node index": 2,
+                    "output port index": 0,
+                    "connected node": 6,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 3,
+                    "output port index": 0,
+                    "connected node": 0,
+                    "connected input port index": 0
+                },
+                {
+                    "parent node index": 7,
+                    "output port index": 0,
+                    "connected node": 8,
+                    "connected input port index": 0
+                }
+            ],
+            "output data": [
+                {
+                    "data": {
+                        "GID": 117,
+                        "identifier": "Data",
+                        "serialized": "gASV3SkAAAAAAACMEGxhenljb21tb24uZW50cnmUjAVFbnRyeZSTlCmBlH2UjAVlbnRyeZSMD2ZlZWRwYXJzZXIudXRpbJSMDkZlZWRQYXJzZXJEaWN0lJOUKYGUKIwFdGl0bGWUjBxJbnRyb2R1Y2luZyBTdGFibGUgTE0gMiAxLjZClIwMdGl0bGVfZGV0YWlslGgIKYGUKIwEdHlwZZSMCnRleHQvcGxhaW6UjAhsYW5ndWFnZZROjARiYXNllIwkaHR0cHM6Ly9zdGFiaWxpdHkuYWkvbmV3cz9mb3JtYXQ9cnNzlIwFdmFsdWWUaAt1jAR0YWdzlF2UaAgpgZQojAR0ZXJtlIwHUHJvZHVjdJSMBnNjaGVtZZROjAVsYWJlbJROdWGMB2F1dGhvcnOUXZRoCCmBlIwEbmFtZZSMDkFuZWwgSXNsYW1vdmljlHNhjAZhdXRob3KUaB+MDWF1dGhvcl9kZXRhaWyUaB2MCXB1Ymxpc2hlZJSMH0ZyaSwgMTkgSmFuIDIwMjQgMTI6MzM6MDAgKzAwMDCUjBBwdWJsaXNoZWRfcGFyc2VklIwEdGltZZSMC3N0cnVjdF90aW1llJOUKE3oB0sBSxNLDEshSwBLBEsTSwB0lH2UKIwHdG1fem9uZZROjAl0bV9nbXRvZmaUTnWGlFKUjAVsaW5rc5RdlGgIKYGUKIwDcmVslIwJYWx0ZXJuYXRllGgOjAl0ZXh0L2h0bWyUjARocmVmlIwxaHR0cHM6Ly9zdGFiaWxpdHkuYWkvbmV3cy9pbnRyb2R1Y2luZy1zdGFibGUtbG0tMpR1YYwEbGlua5RoNYwCaWSUjEo2MjEzYzM0MDQ1M2MzZjUwMjQyNTc3NmU6NjJmMjQ1MmJjMTIxNTk1ZjRkODdjNzEzOjY1YTkxYThjOGQ0NDZlMmNmOGM3MTg5YZSMCmd1aWRpc2xpbmuUiYwHc3VtbWFyeZSMvFRvZGF5LCB3ZSBhcmUgaW50cm9kdWNpbmcgb3VyIGZpcnN0IGxhbmd1YWdlIG1vZGVsIGZyb20gdGhlIG5ldyBTdGFibGUgTE0gMiAKc2VyaWVzOiB0aGUgMS42IGJpbGxpb24gcGFyYW1ldGVyIGJhc2UgbW9kZWwgYW5kIGFuIGluc3RydWN0aW9uLXR1bmVkIAp2ZXJzaW9uLiBUaGUgYmFzZSBtb2RlbCBpcyB0cmFpbmVkIG9u4oCmlIwOc3VtbWFyeV9kZXRhaWyUaAgpgZQoaA6MCXRleHQvaHRtbJRoEE5oEYwkaHR0cHM6Ly9zdGFiaWxpdHkuYWkvbmV3cz9mb3JtYXQ9cnNzlGgTaDt1jAdjb250ZW50lF2UaAgpgZQoaA6MCXRleHQvaHRtbJRoEE5oEYwkaHR0cHM6Ly9zdGFiaWxpdHkuYWkvbmV3cz9mb3JtYXQ9cnNzlGgTWJokAAA8cCBjbGFzcz0iIj48c3Ryb25nPktleSBUYWtlYXdheXM6PC9zdHJvbmc+PC9wPjx1bD48bGk+PHAgY2xhc3M9IiI+PGEgaHJlZj0iaHR0cHM6Ly9odWdnaW5nZmFjZS5jby9zdGFiaWxpdHlhaS9zdGFibGVsbS0yLTFfNmIiPjxzcGFuPlN0YWJsZSBMTSAyIDEuNkI8L3NwYW4+PC9hPiBpcyBhIHN0YXRlLW9mLXRoZS1hcnQgMS42IGJpbGxpb24gcGFyYW1ldGVyIHNtYWxsIGxhbmd1YWdlIG1vZGVsIHRyYWluZWQgb24gbXVsdGlsaW5ndWFsIGRhdGEgaW4gRW5nbGlzaCwgU3BhbmlzaCwgR2VybWFuLCBJdGFsaWFuLCBGcmVuY2gsIFBvcnR1Z3Vlc2UsIGFuZCBEdXRjaC48L3A+PC9saT48bGk+PHAgY2xhc3M9IiI+VGhpcyBtb2RlbCdzIGNvbXBhY3Qgc2l6ZSBhbmQgc3BlZWQgbG93ZXIgaGFyZHdhcmUgYmFycmllcnMsIGFsbG93aW5nIG1vcmUgZGV2ZWxvcGVycyB0byBwYXJ0aWNpcGF0ZSBpbiB0aGUgZ2VuZXJhdGl2ZSBBSSBlY29zeXN0ZW0uPC9wPjwvbGk+PGxpPjxwIGNsYXNzPSIiPkluIGFkZGl0aW9uIHRvIHRoZSBwcmUtdHJhaW5lZCBhbmQgaW5zdHJ1Y3Rpb24tdHVuZWQgdmVyc2lvbiwgd2UgcmVsZWFzZSB0aGUgbGFzdCBjaGVja3BvaW50IGJlZm9yZSB0aGUgcHJlLXRyYWluaW5nIGNvb2xkb3duLiBXZSBpbmNsdWRlIG9wdGltaXplciBzdGF0ZXMgdG8gZmFjaWxpdGF0ZSBkZXZlbG9wZXJzIGluIGZpbmUtdHVuaW5nIGFuZCBleHBlcmltZW50YXRpb24uIERhdGEgZGV0YWlscyB3aWxsIGJlIHByb3ZpZGVkIGluIHRoZSB1cGNvbWluZyB0ZWNobmljYWwgcmVwb3J0LjwvcD48L2xpPjxsaT48cCBjbGFzcz0iIj5TdGFibGUgTE0gMiAxLjZCIGNhbiBiZSB1c2VkIG5vdyBib3RoIGNvbW1lcmNpYWxseSBhbmQgbm9uLWNvbW1lcmNpYWxseSB3aXRoIGEgPGEgaHJlZj0iaHR0cHM6Ly9zdGFiaWxpdHkuYWkvbWVtYmVyc2hpcCI+PHNwYW4+U3RhYmlsaXR5IEFJIE1lbWJlcnNoaXA8L3NwYW4+PC9hPiAmYW1wOyB5b3UgY2FuIHRlc3QgdGhlIG1vZGVsIG9uIDxhIGhyZWY9Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28vc3BhY2VzL3N0YWJpbGl0eWFpL3N0YWJsZWxtLTItMV82Yi16ZXBoeXIiPjxzcGFuPkh1Z2dpbmcgRmFjZTwvc3Bhbj48L2E+LjxhIGhyZWY9Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28vc3BhY2VzL3N0YWJpbGl0eWFpL3N0YWJsZWxtLTItMV82Yi16ZXBoeXIiPjxiciAvPjxiciAvPjwvYT48L3A+PC9saT48L3VsPjxwIGNsYXNzPSIiPlRvZGF5LCB3ZSBhcmUgaW50cm9kdWNpbmcgb3VyIGZpcnN0IGxhbmd1YWdlIG1vZGVsIGZyb20gdGhlIG5ldyBTdGFibGUgTE0gMiBzZXJpZXM6IHRoZSAxLjYgYmlsbGlvbiBwYXJhbWV0ZXIgPGEgaHJlZj0iaHR0cHM6Ly9odWdnaW5nZmFjZS5jby9zdGFiaWxpdHlhaS9zdGFibGVsbS0yLTFfNmIiPjxzcGFuPmJhc2UgbW9kZWw8L3NwYW4+PC9hPiBhbmQgYW4gPGEgaHJlZj0iaHR0cHM6Ly9odWdnaW5nZmFjZS5jby9zdGFiaWxpdHlhaS9zdGFibGVsbS0yLXplcGh5ci0xXzZiIj48c3Bhbj5pbnN0cnVjdGlvbi10dW5lZDwvc3Bhbj48L2E+IHZlcnNpb24uIFRoZSBiYXNlIG1vZGVsIGlzIHRyYWluZWQgb24gYXBwcm94aW1hdGVseSAyIHRyaWxsaW9uIHRva2VucyBmb3IgdHdvIGVwb2NocywgaW5jb3Jwb3JhdGluZyBtdWx0aWxpbmd1YWwgZGF0YSBpbiBFbmdsaXNoLCBTcGFuaXNoLCBHZXJtYW4sIEl0YWxpYW4sIEZyZW5jaCwgUG9ydHVndWVzZSwgYW5kIER1dGNoLiBXZSBsZXZlcmFnZWQgcmVjZW50IGFsZ29yaXRobWljIGFkdmFuY2VtZW50cyBpbiBsYW5ndWFnZSBtb2RlbGluZyB0byBzdHJpa2UgYSBmYXZvcmFibGUgYmFsYW5jZSBiZXR3ZWVuIHNwZWVkIGFuZCBwZXJmb3JtYW5jZSwgZW5hYmxpbmcgZmFzdCBleHBlcmltZW50YXRpb24gYW5kIGl0ZXJhdGlvbiB3aXRoIG1vZGVyYXRlIHJlc291cmNlcy4mbmJzcDs8L3A+PHAgY2xhc3M9IiI+RGF0YSBkZXRhaWxzIHdpbGwgYWxzbyBiZSBhdmFpbGFibGUgd2l0aCB0aGlzIHJlbGVhc2Ugc28gdGhhdCB0aGUgb3BlbiBjb21tdW5pdHkgY2FuIHJlcHJvZHVjZSBzaW1pbGFybHkgcGVyZm9ybWFudCBtb2RlbHMuIEFsb25nIHdpdGggdGhpcywgZm9yIHRoZSBmaXJzdCB0aW1lLCB3ZSBhcmUgcmVsZWFzaW5nIHRoZSBmaW5hbCA8YSBocmVmPSJodHRwczovL2h1Z2dpbmdmYWNlLmNvL3N0YWJpbGl0eWFpL3N0YWJsZWxtLTItMV82Yi9ibG9iL2dsb2JhbF9zdGVwNDIwMDAwL1JFQURNRS5tZCI+PHNwYW4+cHJlLXRyYWluaW5nIGNoZWNrcG9pbnQ8L3NwYW4+PC9hPiBiZWZvcmUgdGhlIGNvb2xkb3duPHNwYW4+LDwvc3Bhbj4gaW5jbHVkaW5nIHRoZSBvcHRpbWl6ZXIgc3RhdGVzLCB0byBoZWxwIGRldmVsb3BlcnMgc21vb3RobHkgY29udGludWUgcHJlLXRyYWluaW5nIGFuZCBmaW5lLXR1bmluZyB0aGVpciBkYXRhIOKAkyBhcyBzb21lIHJlY2VudCBwcmUtdHJhaW5lZCBtb2RlbHMgbWF5IGJlIGhhcmRlciB0byBmaW5lLXR1bmUgZHVlIHRvIGxhdGUtc3RhZ2Ugb3B0aW1pemF0aW9ucy4gSW4gdGhlIHVwY29taW5nIGRheXMsIHdlIHdpbGwgc2hhcmUgYSBjb21wcmVoZW5zaXZlIHRlY2huaWNhbCByZXBvcnQgdGhhdCBleHBsb3JlcyBhbmQgZGVzY3JpYmVzIHRoZSBkYXRhIG1peCBhbmQgdHJhaW5pbmcgcHJvY2VkdXJlIHdlIGZvbGxvd2VkLjwvcD48cCBjbGFzcz0iIj48L3A+PHAgY2xhc3M9InNxc3J0ZS1sYXJnZSI+PHN0cm9uZz5Nb2RlbCBQZXJmb3JtYW5jZTwvc3Ryb25nPjwvcD48cCBjbGFzcz0iIj5XZSBjb21wYXJlIFN0YWJsZSBMTSAyIDEuNkIgdG8gb3RoZXIgcG9wdWxhciBzbWFsbCBsYW5ndWFnZSBtb2RlbHMgc3VjaCBhcyBNaWNyb3NvZnTigJlzIFBoaS0xLjUgKDEuM0IpICZhbXA7IFBoaS0yICgyLjdCKSwgVGlueUxsYW1hIDEuMUIsIG9yIEZhbGNvbiAxQi4gSXQgb3V0cGVyZm9ybXMgbW9kZWxzIHVuZGVyIDJCIG9uIG1vc3QgdGFza3MsIGFuZCBldmVuIHNvbWUgbGFyZ2VyIG9uZXMsIHdoaWxlIG9mZmVyaW5nIGNvbXBhY3Qgc2l6ZSBhbmQgc3BlZWQgd2hlbiB0ZXN0ZWQgd2l0aCBmZXctc2hvdCBwZXJmb3JtYW5jZSBhY3Jvc3MgZ2VuZXJhbCBiZW5jaG1hcmtzIG91dGxpbmVkIGluIHRoZSBPcGVuIExMTSBMZWFkZXJib2FyZC48L3A+CgoKCgoKCgoKCgoKCgoKCgoKCgoKCiAgCiAgCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgogIAoKICAgIAogIAogICAgCgogICAgICAKCiAgICAgIAogICAgICAgIDxmaWd1cmUgY2xhc3M9IgogICAgICAgICAgICAgIHNxcy1ibG9jay1pbWFnZS1maWd1cmUKICAgICAgICAgICAgICBpbnRyaW5zaWMKICAgICAgICAgICAgIj4KICAgICAgICAgIAogICAgICAgIAogICAgICAgIAoKICAgICAgICAKICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgPGltZyBhbHQ9IiIgaGVpZ2h0PSI2MzYiIHNyYz0iaHR0cHM6Ly9pbWFnZXMuc3F1YXJlc3BhY2UtY2RuLmNvbS9jb250ZW50L3YxLzYyMTNjMzQwNDUzYzNmNTAyNDI1Nzc2ZS9lZmQyMjk4ZC1jOTVhLTRmZWYtYTZkMy04ZTExOGM1Nzc0ZDMvU3RhYmxlX0xNXzJfMS42Ql9PcGVuX0xMTV9MZWFkZXJib2FyZC5wbmc/Zm9ybWF0PTEwMDB3IiB3aWR0aD0iMTc3MCIgLz4KCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgICAKICAgICAgICAKICAgICAgICAgIAogICAgICAgIAoKICAgICAgICAKICAgICAgICAgIAogICAgICAgICAgPGZpZ2NhcHRpb24gY2xhc3M9ImltYWdlLWNhcHRpb24td3JhcHBlciI+CiAgICAgICAgICAgIDxwIGNsYXNzPSJzcXNydGUtc21hbGwiPjxhIGhyZWY9Imh0dHBzOi8vaHVnZ2luZ2ZhY2UuY28vc3BhY2VzL0h1Z2dpbmdGYWNlSDQvb3Blbl9sbG1fbGVhZGVyYm9hcmQiPjxzcGFuPjxlbT5PcGVuIExMTSBMZWFkZXJib2FyZDwvZW0+PC9zcGFuPjwvYT48ZW0+IGV2YWx1YXRpb25zLiAqIFF3ZW4vUXdlbi0xXzhiIHJlc3VsdHMgYXJlIG5vdCBhdmFpbGFibGUgYXQgdGhpcyB0aW1lPC9lbT48L3A+CiAgICAgICAgICA8L2ZpZ2NhcHRpb24+CiAgICAgICAgCiAgICAgIAogICAgICAgIDwvZmlndXJlPgogICAgICAKCiAgICAKICAKCgogIAoKCgoKCiAgPHAgY2xhc3M9IiI+VGhhbmtzIHRvIGV4cGxpY2l0IHRyYWluaW5nIG9uIG11bHRpbGluZ3VhbCB0ZXh0LCBwZXJmb3JtYW5jZSBvbiA8YSBocmVmPSJodHRwczovL2FyeGl2Lm9yZy9hYnMvMjMwNy4xNjAzOSI+PHNwYW4+dHJhbnNsYXRlZCB2ZXJzaW9uczwvc3Bhbj48L2E+IG9mIEFSQyBDaGFsbGVuZ2UsIEhlbGxhU3dhZywgVHJ1dGhmdWxRQSwgTU1MVSwgYW5kIExBTUJBREEgc2hvdyBTdGFibGUgTE0gMiAxLjZCIGV4Y2VlZGluZyBvdGhlciBtb2RlbHMgYnkgYSBjb25zaWRlcmFibGUgbWFyZ2luLjwvcD4KCgoKCgoKCgoKCgoKCgoKCgoKCgoKICAKICAKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCiAgCgogICAgCiAgCiAgICAKCiAgICAgIAoKICAgICAgCiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iCiAgICAgICAgICAgICAgc3FzLWJsb2NrLWltYWdlLWZpZ3VyZQogICAgICAgICAgICAgIGludHJpbnNpYwogICAgICAgICAgICAiPgogICAgICAgICAgCiAgICAgICAgCiAgICAgICAgCgogICAgICAgIAogICAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICA8aW1nIGFsdD0iIiBoZWlnaHQ9IjY1MCIgc3JjPSJodHRwczovL2ltYWdlcy5zcXVhcmVzcGFjZS1jZG4uY29tL2NvbnRlbnQvdjEvNjIxM2MzNDA0NTNjM2Y1MDI0MjU3NzZlL2RmOTA0OGYxLWYzZDUtNDYxNC1iNWNlLWU2NzM0MTUyMjk5Yi9TdGFibGVfTE1fMl8xLjZCX011bHRpbGluZ3VhbF9fTGVhZGVyYm9hcmQucG5nP2Zvcm1hdD0xMDAwdyIgd2lkdGg9IjIwOTIiIC8+CgogICAgICAgICAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgCiAgICAgICAgCiAgICAgICAgICAKICAgICAgICAKCiAgICAgICAgCiAgICAgICAgICAKICAgICAgICAgIDxmaWdjYXB0aW9uIGNsYXNzPSJpbWFnZS1jYXB0aW9uLXdyYXBwZXIiPgogICAgICAgICAgICA8cCBjbGFzcz0ic3FzcnRlLXNtYWxsIj48ZW0+MC1zaG90IGF2ZXJhZ2UgYWNjdXJhY3kgcGVyZm9ybWFuY2Ugb24gT2thcGkgdHJhbnNsYXRlZCBiZW5jaG1hcmtzIGFuZCBtdWx0aWxpbmd1YWwgTEFNQkFEQS4gTm90ZSB0aGF0IDwvZW0+PGEgaHJlZj0iaHR0cHM6Ly9naXRodWIuY29tL0VsZXV0aGVyQUkvbG0tZXZhbHVhdGlvbi1oYXJuZXNzL3RyZWUvbWFpbi9sbV9ldmFsL3Rhc2tzL2xhbWJhZGFfbXVsdGlsaW5ndWFsIj48c3Bhbj48ZW0+TEFNQkFEQTwvZW0+PC9zcGFuPjwvYT48ZW0+IGRvZXMgbm90IGluY2x1ZGUgRHV0Y2ggYW5kIFBvcnR1Z3Vlc2UuPC9lbT48L3A+CiAgICAgICAgICA8L2ZpZ2NhcHRpb24+CiAgICAgICAgCiAgICAgIAogICAgICAgIDwvZmlndXJlPgogICAgICAKCiAgICAKICAKCgogIAoKCgoKCiAgPHAgY2xhc3M9IiI+QWNjb3JkaW5nIHRvIDxhIGhyZWY9Imh0dHBzOi8vcGFwZXJzd2l0aGNvZGUuY29tL2RhdGFzZXQvbXQtYmVuY2giPjxzcGFuPk1UIEJlbmNoPC9zcGFuPjwvYT4gcmVzdWx0cywgU3RhYmxlIExNIDIgMS42QiBzaG93cyBjb21wZXRpdGl2ZSBwZXJmb3JtYW5jZSwgbWF0Y2hpbmcgb3IgZXZlbiBzdXJwYXNzaW5nIHNpZ25pZmljYW50bHkgbGFyZ2VyIG1vZGVscy48L3A+CgoKCgoKCgoKCgoKCgoKCgoKCgoKCiAgCiAgCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgogIAoKICAgIAogIAogICAgCgogICAgICAKCiAgICAgIAogICAgICAgIDxmaWd1cmUgY2xhc3M9IgogICAgICAgICAgICAgIHNxcy1ibG9jay1pbWFnZS1maWd1cmUKICAgICAgICAgICAgICBpbnRyaW5zaWMKICAgICAgICAgICAgIj4KICAgICAgICAgIAogICAgICAgIAogICAgICAgIAoKICAgICAgICAKICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgPGltZyBhbHQ9IiIgaGVpZ2h0PSIxNjI0IiBzcmM9Imh0dHBzOi8vaW1hZ2VzLnNxdWFyZXNwYWNlLWNkbi5jb20vY29udGVudC92MS82MjEzYzM0MDQ1M2MzZjUwMjQyNTc3NmUvZmFhOGE5NjMtYzhlYi00ODNkLWE4MzgtNGM4NzcwMzQ0NzRiL3N0YWJsZWxtLTItemVwaHlyLTFfNmItbXQtYmVuY2hfX3BhZGRlZC5wbmc/Zm9ybWF0PTEwMDB3IiB3aWR0aD0iNDA5OCIgLz4KCiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgCiAgICAgICAgICAKICAgICAgICAKICAgICAgICAgIAogICAgICAgIAoKICAgICAgICAKICAgICAgCiAgICAgICAgPC9maWd1cmU+CiAgICAgIAoKICAgIAogIAoKCiAgCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCiAgCgogICAgCiAgCiAgICAKCiAgICAgIAoKICAgICAgCiAgICAgICAgPGZpZ3VyZSBjbGFzcz0iCiAgICAgICAgICAgICAgc3FzLWJsb2NrLWltYWdlLWZpZ3VyZQogICAgICAgICAgICAgIGludHJpbnNpYwogICAgICAgICAgICAiPgogICAgICAgICAgCiAgICAgICAgCiAgICAgICAgCgogICAgICAgIAogICAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgCiAgICAgICAgICAgIAogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICA8aW1nIGFsdD0iIiBoZWlnaHQ9IjYzNiIgc3JjPSJodHRwczovL2ltYWdlcy5zcXVhcmVzcGFjZS1jZG4uY29tL2NvbnRlbnQvdjEvNjIxM2MzNDA0NTNjM2Y1MDI0MjU3NzZlLzA0NTg1NGY3LWIyODctNDQwYi1iNDg1LTI5Mzk0NTE4MzE4NS9TdGFibGVfTE1fMl8xLjZCX01ULUJlbmNoX0xlYWRlcmJvYXJkX1BhZGRlZF8yLnBuZz9mb3JtYXQ9MTAwMHciIHdpZHRoPSIxNjUwIiAvPgoKICAgICAgICAgICAgICAgIAogICAgICAgICAgICAKICAgICAgICAgIAogICAgICAgIAogICAgICAgICAgCiAgICAgICAgCgogICAgICAgIAogICAgICAgICAgCiAgICAgICAgICA8ZmlnY2FwdGlvbiBjbGFzcz0iaW1hZ2UtY2FwdGlvbi13cmFwcGVyIj4KICAgICAgICAgICAgPHAgY2xhc3M9InNxc3J0ZS1zbWFsbCI+PGVtPihncmFkaW5nIG9uIGEgc2NhbGUgb2YgMSB0byAxMCk8L2VtPjwvcD4KICAgICAgICAgIDwvZmlnY2FwdGlvbj4KICAgICAgICAKICAgICAgCiAgICAgICAgPC9maWd1cmU+CiAgICAgIAoKICAgIAogIAoKCiAgCgoKCgoKICA8cCBjbGFzcz0iIj5CeSByZWxlYXNpbmcgb25lIG9mIHRoZSBtb3N0IHBvd2VyZnVsIHNtYWxsIGxhbmd1YWdlIG1vZGVscyB0byBkYXRlIGFuZCBwcm92aWRpbmcgY29tcGxldGUgdHJhbnNwYXJlbmN5IG9uIGl0cyB0cmFpbmluZyBkZXRhaWxzLCB3ZSBhaW0gdG8gZW1wb3dlciBkZXZlbG9wZXJzIGFuZCBtb2RlbCBjcmVhdG9ycyB0byBleHBlcmltZW50IGFuZCBpdGVyYXRlIHF1aWNrbHkuIEl0IGlzIGltcG9ydGFudCB0byBub3RlIHRoYXQsIGR1ZSB0byB0aGUgbmF0dXJlIG9mIHNtYWxsLCBsb3ctY2FwYWNpdHkgbGFuZ3VhZ2UgbW9kZWxzLCBTdGFibGUgTE0gMiAxLjZCIG1heSBzaW1pbGFybHkgZXhoaWJpdCBjb21tb24gaXNzdWVzIHN1Y2ggYXMgaGlnaCBoYWxsdWNpbmF0aW9uIHJhdGVzIG9yIHBvdGVudGlhbCB0b3hpYyBsYW5ndWFnZS4gV2UgYXNrIHRoZSBjb21tdW5pdHkgdG8ga2VlcCB0aGlzIGluIG1pbmQgd2hlbiBidWlsZGluZyB0aGVpciBhcHBsaWNhdGlvbnMgYW5kIHRha2UgYXBwcm9wcmlhdGUgbWVhc3VyZXMgdG8gZW5zdXJlIHRoZXkgYXJlIGRldmVsb3BpbmcgcmVzcG9uc2libHkuPC9wPjxwIGNsYXNzPSIiPjxiciAvPjwvcD48cCBjbGFzcz0ic3FzcnRlLWxhcmdlIj48c3Ryb25nPkZvciBDb21tZXJjaWFsIGFuZCBOb24tQ29tbWVyY2lhbCBVc2U8L3N0cm9uZz48L3A+PHAgY2xhc3M9IiI+U3RhYmxlIExNIDIgMS42QiwgdGhlIGZpcnN0IGluIGEgc2VyaWVzIG9mIFN0YWJsZSBMTSBtb2RlbHMsIGlzIHBhcnQgb2YgdGhlIDxhIGhyZWY9Imh0dHBzOi8vc3RhYmlsaXR5LmFpL21lbWJlcnNoaXAiPjxzcGFuPlN0YWJpbGl0eSBBSSBNZW1iZXJzaGlwPC9zcGFuPjwvYT4uIFRoZSBtZW1iZXJzaGlwIGhhcyB0aHJlZSBkaXN0aW5jdCBtZW1iZXJzaGlwIHRpZXJzLCBlbnN1cmluZyB0aGF0IGFueW9uZSwgZnJvbSBpbmRpdmlkdWFscyB0byBlbnRlcnByaXNlcywgY2FuIGJlbmVmaXQgZnJvbSB0aGlzIHRlY2hub2xvZ3kuIFlvdSBjYW4gbGVhcm4gbW9yZSA8YSBocmVmPSJodHRwczovL3N0YWJpbGl0eS5haS9tZW1iZXJzaGlwIj48c3Bhbj5oZXJlPC9zcGFuPjwvYT4uJm5ic3A7PC9wPjxwIGNsYXNzPSIiPlN0YXkgdXBkYXRlZCBvbiBvdXIgcHJvZ3Jlc3MgYnkgc2lnbmluZyB1cCBmb3Igb3VyIG5ld3NsZXR0ZXIsIGFuZCBsZWFybiBtb3JlIGFib3V0IGNvbW1lcmNpYWwgYXBwbGljYXRpb25zIGJ5IGNvbnRhY3RpbmcgdXMgaGVyZS4mbmJzcDs8L3A+PHAgY2xhc3M9IiI+Rm9sbG93IHVzIG9uPGEgaHJlZj0iaHR0cHM6Ly90d2l0dGVyLmNvbS9zdGFiaWxpdHlhaSI+IDxzcGFuPlR3aXR0ZXI8L3NwYW4+PC9hPiw8YSBocmVmPSJodHRwczovL3d3dy5pbnN0YWdyYW0uY29tL3N0YWJpbGl0eS5haS8iPiA8c3Bhbj5JbnN0YWdyYW08L3NwYW4+PC9hPiw8YSBocmVmPSJodHRwczovL3d3dy5saW5rZWRpbi5jb20vY29tcGFueS82NjMxODYyMi8iPiA8c3Bhbj5MaW5rZWRJbjwvc3Bhbj48L2E+LCBhbmQgam9pbiBvdXI8YSBocmVmPSJodHRwczovL2Rpc2NvcmQuZ2cvc3RhYmxlZGlmZnVzaW9uIj4gPHNwYW4+RGlzY29yZCBDb21tdW5pdHk8L3NwYW4+PC9hPi48L3A+lHVhjA1tZWRpYV9jb250ZW50lF2UfZQojAR0eXBllIwJaW1hZ2UvcG5nlIwDdXJslIyLaHR0cHM6Ly9pbWFnZXMuc3F1YXJlc3BhY2UtY2RuLmNvbS9jb250ZW50L3YxLzYyMTNjMzQwNDUzYzNmNTAyNDI1Nzc2ZS8xNzA1Njk0MjM0Mzk4LTFFMDZINThCN01UQVpIWVNJMzkyL1N0YWJsZV9MTV8yXzEuNmIucG5nP2Zvcm1hdD0xNTAwd5SMBm1lZGl1bZSMBWltYWdllIwJaXNkZWZhdWx0lIwEdHJ1ZZSMBXdpZHRolIwEMTUwMJSMBmhlaWdodJSMBDE1MDCUdWF1c2Iu"
+                    },
+                    "dependent node outputs": [
+                        0,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 46,
+                        "identifier": "Data",
+                        "serialized": "gASVDgAAAAAAAACMCmZlZWRzLm9wbWyULg=="
+                    },
+                    "dependent node outputs": [
+                        1,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 47,
+                        "identifier": "Data",
+                        "serialized": "gASVDAAAAAAAAACMCHVzZWQudHh0lC4="
+                    },
+                    "dependent node outputs": [
+                        2,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 48,
+                        "identifier": "Data",
+                        "serialized": "gASVbwAAAAAAAACMIWxhenljb250ZW50LmZlZWRyZWFwZXIuZmVlZHJlYXBlcpSMDVN0b3JhZ2VDb25maWeUk5QpgZR9lCiMCWZlZWRfZmlsZZSMCmZlZWRzLm9wbWyUjAl1c2VkX2ZpbGWUjAh1c2VkLnR4dJR1Yi4="
+                    },
+                    "dependent node outputs": [
+                        3,
+                        0
+                    ]
+                },
+                {
+                    "data": {
+                        "GID": 106,
+                        "identifier": "Data",
+                        "serialized": "gASVNwAAAAAAAACMM3NrLXF4NFNXa01pd2lPZ29IdDI2QXBVVDNCbGJrRkpPTzNOQ2dVWE1VV1JzRVFWeklHY5Qu"
+                    },
+                    "dependent node outputs": [
+                        9,
+                        0
+                    ]
+                }
+            ],
+            "flow view": {
+                "drawings": [],
+                "view size": [
+                    10000.0,
+                    7000.0
+                ]
+            }
+        }
+    },
+    "addons": {
+        "Logging": {
+            "GID": 3,
+            "version": "0.0.1",
+            "custom state": {}
+        },
+        "Variables": {
+            "GID": 4,
+            "version": "0.4",
+            "custom state": {
+                "5": {}
+            }
+        }
+    }
+}

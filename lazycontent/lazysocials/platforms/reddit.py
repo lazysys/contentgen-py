@@ -82,7 +82,7 @@ class Reddit(Platform):
 		return result
 
 	def _publish(self, content: str, title: str = None, images: List[str] = []) -> bool:
-		for subreddit in self._subreddits:
+		for subreddit in self.subreddits:
 			flair = [flair["flair_template_id"] for flair in subreddit[0].flair.link_templates.user_selectable() if flair["flair_text"] == subreddit[1]]
 			subreddit = subreddit[0]
 
@@ -127,15 +127,15 @@ class Reddit(Platform):
 			if isinstance(content, Microblog):
 				return bool(self._publish(content.content, content.images))
 			elif isinstance(content, Thread):
-				content = "\n".join([microblog.content for microblog in content.microblogs])
+				text = "\n".join([microblog.content for microblog in content.microblogs])
 				images = [item for sublist in [microblog.images for microblog in content.images] for item in sublist]
-				return self._publish(content, images = images)
+				return self._publish(content = text, images = images)
 			elif isinstance(content, Article):
-				return self._publish(content.content, title = content.title)
+				return self._publish(content = content.content, title = content.title)
 			elif isinstance(content, Image):
-				return self._publish(content.content, [content.image])
+				return self._publish(content = content.content, images = [content.image])
 			elif isinstance(content, Carousel):
-				return self._publish(content.content, [img.image for img in content.images])
+				return self._publish(content = content.content, images = [img.image for img in content.images])
 			elif isinstance(content, Video): # TODO: reddit video posting
 				raise UnimplementedError
 			else:

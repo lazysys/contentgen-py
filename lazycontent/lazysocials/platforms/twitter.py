@@ -83,12 +83,12 @@ class Twitter(Platform):
 				return bool(self._publish(content.content, medias = content.images))
 			elif isinstance(content, Thread):
 				images = content.images
-				last_tweet = self._publish(content, medias = [images.pop() for _ in range(self.max_images)])
+				last_tweet = self._publish(content.content, medias = [images.pop() for _ in range(min(len(images), self.max_images))])
 				for microblog in content.microblogs:
 					current_images = microblog.images
 					last_tweet = self._publish(
 							microblog.content, 
-							medias = [current_images.pop() for _ in range(min(len(current_images), 4))] + 
+							medias = [current_images.pop() for _ in range(min(len(current_images), self.max_images))] + 
 							[images.pop() for _ in range(max(0, self.max_images - len(current_images)))], 
 							in_reply_to = last_tweet
 					)
