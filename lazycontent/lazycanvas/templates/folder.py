@@ -5,7 +5,7 @@ import os
 from PIL import Image
 import yaml
 
-from ..templates.templates import CanvasTemplate
+from . import CanvasTemplate
 
 from ..font import Font
 

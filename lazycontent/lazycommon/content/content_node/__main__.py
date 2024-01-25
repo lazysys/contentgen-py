@@ -1,6 +1,6 @@
 import inspect
-from ..content_type import Content
-from .. import content_type
+from ...content_type import Content
+from ... import content_type
 
 types = [obj for name, obj in inspect.getmembers(content_type) if inspect.isclass(obj)]
 types.remove(Content)

@@ -8,7 +8,7 @@ from .feed import Feed
 from .storage import Storage
 from typing import *
 
-from ..lazycommon.entry import Entry
+from lazycommon.entry import Entry
 
 @dataclass
 class EntryManager:

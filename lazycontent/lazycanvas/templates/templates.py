@@ -8,7 +8,7 @@ from ..font import Font
 class CanvasTemplate(ABC):
 	@property
 	@abstractmethod
-	def backgrounds(self) -> Tuple[Image, Image, Image]:
+	def backgrounds(self) -> Tuple[type(Image), type(Image), type(Image)]:
 		pass
 
 	@property

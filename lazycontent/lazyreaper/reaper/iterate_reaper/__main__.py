@@ -1,4 +1,4 @@
-from ...lazycommon.entry import Entry
+from lazycommon.entry import Entry
 
 from typing import Iterator, List
 

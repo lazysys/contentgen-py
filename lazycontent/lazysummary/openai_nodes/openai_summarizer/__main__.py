@@ -1,4 +1,4 @@
-from ..openai import OpenAIChat, OpenAISummarizer
+from ...openai import OpenAIChat, OpenAISummarizer
 
 main_callable = OpenAISummarizer
 

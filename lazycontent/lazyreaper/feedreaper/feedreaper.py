@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple
 from .storage import OPML, File, StorageConfig
 from .entrymanager import EntryManager
 
-from ..lazycommon.entry import Entry
+from lazycommon.entry import Entry
 
 @dataclass
 class FeedReaper:

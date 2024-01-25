@@ -1,4 +1,4 @@
-from ..openai import OpenAIChat
+from ...openai import OpenAIChat
 
 main_callable = OpenAIChat
 

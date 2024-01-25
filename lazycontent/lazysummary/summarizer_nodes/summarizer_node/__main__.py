@@ -1,7 +1,7 @@
-from ..summarizer import Summarizer
+from ...summarizer import Summarizer
 
-from ...lazycommon.content_type import Content
-from ...lazycommon.entry import Entry
+from lazycommon.content_type import Content
+from lazycommon.entry import Entry
 
 from typing import Type, List
 

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from ..lazycommon.content_type import Content
-from ..lazycommon.entry import Entry
+from lazycommon.content_type import Content
+from lazycommon.entry import Entry
 
 class Summarizer(ABC):
 	"""
