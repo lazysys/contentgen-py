@@ -1,23 +1,10 @@
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 
-from feedreaper.storage import OPML, File
-from feedreaper.entrymanager import EntryManager
+from lazycontent.feedreaper.storage import OPML, File, StorageConfig
+from lazycontent.feedreaper.entrymanager import EntryManager
 
-from lazycommon.entry import Entry
-
-@dataclass(frozen=True)
-class StorageConfig:
-	"""
-	Holds the configuration for FeedReaper's RSS storage.
-	Specifies in which files the feed URLs and the used entry IDs are located.
-	
-	:param feed_file: The file which stores the feed URLs.
-	:param used_file: The file which stores the used entry IDs.
-	"""
- 	
-	feed_file: str = "feeds.opml"
-	used_file: str = "used.txt"
+from lazycontent.lazycommon.entry import Entry
 
 @dataclass
 class FeedReaper:

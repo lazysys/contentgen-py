@@ -2,11 +2,11 @@ from dataclasses import dataclass
 from openai import OpenAI
 from typing import List, Type
 
-from lazycommon.content_type import Content
-import lazycommon.content_type as ContentType
-from lazycommon.entry import Entry
+from ..lazycommon.content_type import Content
+import ..lazycommon.content_type as ContentType
+from ..lazycommon.entry import Entry
 
-from lazysummary.summarizer import Summarizer
+from .summarizer import Summarizer
 
 @dataclass
 class OpenAIChat:

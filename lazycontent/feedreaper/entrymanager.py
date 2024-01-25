@@ -4,11 +4,11 @@ import requests
 import tempfile
 import opengraph_py3
 
-from feedreaper.feed import Feed
-from feedreaper.storage import Storage
+from lazycontent.feedreaper.feed import Feed
+from lazycontent.feedreaper.storage import Storage
 from typing import *
 
-from lazycommon.entry import Entry
+from lazycontent.lazycommon.entry import Entry
 
 @dataclass
 class EntryManager:

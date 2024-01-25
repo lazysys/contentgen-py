@@ -3,6 +3,19 @@ from typing import *
 from abc import ABC, abstractmethod
 import xml.etree.ElementTree as ET
 
+@dataclass(frozen=True)
+class StorageConfig:
+	"""
+	Holds the configuration for FeedReaper's RSS storage.
+	Specifies in which files the feed URLs and the used entry IDs are located.
+	
+	:param feed_file: The file which stores the feed URLs.
+	:param used_file: The file which stores the used entry IDs.
+	"""
+ 	
+	feed_file: str = "feeds.opml"
+	used_file: str = "used.txt"
+
 class Storage(ABC):
 	"""
 	Interface to handle the storage of feeds.

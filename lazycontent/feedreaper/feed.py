@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from time import mktime
 from typing import List
 
-from lazycommon.entry import Entry
+from lazycontent.lazycommon.entry import Entry
 
 @dataclass
 class Feed:
