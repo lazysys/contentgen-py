@@ -1,9 +1,9 @@
 from dataclasses import dataclass
+import openai
 from openai import OpenAI
-from typing import List, Type
+from typing import List, Type, get_type_hints, get_args
 
-from ..lazycommon.content_type import Content
-import ..lazycommon.content_type as ContentType
+from ..lazycommon.content_type import *
 from ..lazycommon.entry import Entry
 
 from .summarizer import Summarizer
@@ -19,6 +19,14 @@ class OpenAIChat:
 
 	_key: str
 	model: str = "gpt-3.5-turbo"
+	
+	# TODO: this is a hacky workaround, waiting for official API/Enum
+	@classmethod
+	def models(_):
+		model_type = get_type_hints(openai.types.chat.completion_create_params.CompletionCreateParamsBase)['model']
+		args = get_args(model_type)
+		result = get_args(get_args(args[0])[1])
+		return result
 
 	@property
 	def key(self):
@@ -76,27 +84,27 @@ class OpenAISummarizer(Summarizer):
 			articles += f"\nTitle: {entry.title}\n"
 			articles += f"Content: {entry.content}\n"
 		
-		if issubclass(into, ContentType.Microblog):
+		if issubclass(into, Microblog):
 				answer = self.api.generate(f"DO NOT MENTION THE CHARACTER COUNT, NOR SHOW THAT YOU ARE A BOT! BE A HUMAN WRITING NORMALLY A CONCISE POST! DON'T INTRODUCE YOURSELF! You're a highly qualified tech-journalist. Make a summary of the following articles combined, at max 280 characters:" + articles)
 				while True:
 					if len(answer) > 280:
 						answer = self.api.generate(f"DO NOT MENTION THE CHARACTER COUNT, NOR SHOW THAT YOU ARE A BOT! BE A HUMAN WRITING NORMALLY A CONCISE POST! DON'T INTRODUCE YOURSELF! You're a highly qualified tech-journalist. Make a short (at max 200 characters) summary of the following snippet, and focus on the newsworthiness of it:\n" + answer)
 					else:
 						return [answer]
-		elif issubclass(into, ContentType.Thread):
+		elif issubclass(into, Thread):
 			answer = self.api.generate(f"You're a highly qualified tech journalist.\n\ndon't prefix the tweets\ndon't use hashtags\n\nCreate a Twitter thread with tweet blocks seperated by --- from the following article(s) (combine them into one summary thread):" + articles)
 			return answer.split("\n---\n")
-		elif issubclass(into, ContentType.Article):
+		elif issubclass(into, Article):
 			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write articles in this format:\nTitle: <title of the article>\nContent: <contents of the article>\n\nMake ONE SUMMARY article out of the following article(s):" + articles)
 			return self._convert_answer_to_std(answer)
-		elif issubclass(into, ContentType.ShortVideo):
+		elif issubclass(into, ShortVideo):
 			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write short (15s) video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video>\n\nYou follow the 3 point structure: hook, some talking points, call to action (the goal is to get engagement) => but all woven into one text to be read out loud (and put all these under Content:)\n\ndont use emojis\nbe concise, don't introduce yourself\n\nMake ONE SHORT SUMMARY VIDEO out of the following article(s):" + articles)
 			return self._convert_answer_to_std(answer)
-		elif issubclass(into, ContentType.LongVideo):
+		elif issubclass(into, LongVideo):
 			answer = self.api.generate(f"You're a highly qualified tech-journalist. You write long (5min) video scripts in this format:\nTitle: <caption of video>\nContent: <your lines to be said in the video, NO FORMATTING, ONLY WHAT WOULD BE SPOKEN OUT>\n\nYou follow the 3 point structure: hook, many talking points, call to action (the goal is to get engagement) => but all woven into one text to be read out loud (and put all these under Content:)\n\ndont use emojis\nbe concise, don't introduce yourself\n\nMake ONE LONG SUMMARY VIDEO out of the following article(s):" + articles)
 			return self._convert_answer_to_std(answer)
-		elif issubclass(into, ContentType.Image):
+		elif issubclass(into, Image):
 			return [self.api.generate(f"You're a highly qualified tech-journalist.\n\nUse the following format (NO FORMATTING, THIS IS GOING STRAIGHT TO THE IMAGE):\n<headline without quotes>\n\nMake ONE short and concise summary headline (one line) that can be put on an image from the following article(s) (handle these articles as one):" + articles)]
-		elif issubclass(into, ContentType.Carousel):
+		elif issubclass(into, Carousel):
 			return self._convert_carousel_to_std(self.api.generate(f"You're a highly qualified tech journalist. Make an Instagram carousel slide by slide using this format (every slide is one line, one sentence, atomic short and concise) (only one caption which can be longer):\n\nCaption: <caption>\n\n1: <first slide>\n2: <second slide>\n<...as many as you need...>\n\nSummarize in this format the following article(s) (in your head combine these into one):" + articles))
 

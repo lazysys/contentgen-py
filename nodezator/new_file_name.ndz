@@ -1,0 +1,5 @@
+{ 'installed_node_packs': [],
+  'node_packs': ['/home/freenormie/Documents/contentgen-py/lazycontent'],
+  'nodes': {},
+  'parent_sockets': [],
+  'text_blocks': []}
