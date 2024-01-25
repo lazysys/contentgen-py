@@ -1,5 +1,5 @@
-from ..feedreaper import FeedReaper
-from ..storage import StorageConfig
+from .. import FeedReaper
+from .. import StorageConfig
 
 main_callable = FeedReaper
 

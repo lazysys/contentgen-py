@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from typing import List, Dict, Tuple
 
-from lazycontent.feedreaper.storage import OPML, File, StorageConfig
-from lazycontent.feedreaper.entrymanager import EntryManager
+from .storage import OPML, File, StorageConfig
+from .entrymanager import EntryManager
 
-from lazycontent.lazycommon.entry import Entry
+from ..lazycommon.entry import Entry
 
 @dataclass
 class FeedReaper:
