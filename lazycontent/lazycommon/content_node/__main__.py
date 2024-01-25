@@ -8,10 +8,10 @@ types.remove(Content)
 def content_type_picker(typ: {
 	"widget_name": "option_menu",
 	"widget_kwargs": {
-		"options": types,
+		"options": [typ.__name__ for typ in types],
 	},
-	"type": Content
-}) -> Content:
-	return typ
+	"type": str
+} = types[0].__name__) -> Content:
+	return next(filter(lambda x: x.__name__ == typ, types), None)
 
 main_callable = content_type_picker
