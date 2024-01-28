@@ -7,12 +7,12 @@ class Content:
 
 @dataclass
 class Microblog(Content):
-	images: List[str] = None
+	images: List[bytes] = None
 # NOTE: don't you dare inherit Microblog from Thread, that might feel cool now but imagine the implications...
 @dataclass
 class Thread(Content):
 	microblogs: List[Microblog] = None
-	images: List[str] = None
+	images: List[bytes] = None
 
 @dataclass
 class Article(Content):
@@ -20,7 +20,7 @@ class Article(Content):
 
 @dataclass
 class Video(Content):
-	video: str
+	video: bytes
 @dataclass
 class ShortVideo(Video):
 	pass
@@ -30,7 +30,7 @@ class LongVideo(Video):
 
 @dataclass
 class Image(Content):
-	image: str
+	image: bytes
 @dataclass
 class Carousel(Content):
 	images: List[Image]
