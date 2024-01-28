@@ -2,7 +2,7 @@ from typing import List, Dict, Tuple
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
-from lazycommon.content_type import Content
+import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
@@ -10,7 +10,6 @@ from lazysocials.platforms.platform import Platform
 class LazySocials:
 	platforms: List[Platform]
 	
-	def publish(self, content: Content):
+	def publish(self, content: content.Content):
 		for platform in self.platforms:
-			if any(isinstance(content, x) for x in platform.types):
-				platform.publish(content)
+			platform.publish(content)

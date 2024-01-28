@@ -6,7 +6,7 @@ import praw
 from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia, Subreddit
 from praw.exceptions import RedditAPIException
 
-from lazycommon.content_type import Content, Microblog
+import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
@@ -42,7 +42,7 @@ class Reddit(Platform):
 	def subreddits(self, subreddits: Dict[str, str]):
 		self._subreddits = [(self._client.subreddit(key), val) for key, val in subreddits.items()]
 
-	def __init__(self, _auth, subreddits: List[str], types: List[Type[Content]]):
+	def __init__(self, _auth, subreddits: List[str], types: List[Type[content.Content]]):
 		super().__init__(types)
 		self._auth = _auth
 		self.__post_init__()
@@ -80,7 +80,7 @@ class Reddit(Platform):
 		for key in inlines.keys():
 			result += f" {{{key}}}"
 		return result
-
+	# FIXME: image filename as title and no image, what??
 	def _publish(self, content: str, title: str = None, images: List[str] = []) -> bool:
 		for subreddit in self.subreddits:
 			flair = [flair["flair_template_id"] for flair in subreddit[0].flair.link_templates.user_selectable() if flair["flair_text"] == subreddit[1]]
@@ -120,23 +120,22 @@ class Reddit(Platform):
 					elif "SUBMIT_VALIDATION_BODY_NOT_ALLOWED" in e: # FIXME: but they might allow images? quite weird requirements ngl reddit
 						SUBMIT_VALIDATION_BODY_NOT_ALLOWED = True
 			return True
-				
+
+	def Microblog(self, content: content.Microblog) -> bool:
+		return bool(self._publish(content.content, content.images))
+	def Thread(self, content: content.Thread) -> bool:
+		text = "\n".join([microblog.content for microblog in content.microblogs])
+		images = [item for sublist in [microblog.images for microblog in content.images] for item in sublist]
+		return self._publish(content = text, images = images)
+
+	def Article(self, content: content.Article) -> bool:
+		return self._publish(content = content.content, title = content.title)
+
+	def Image(self, content: content.Image) -> bool:
+		return self._publish(content = content.content, images = [content.image])
+	def Carousel(self, content: content.Carousel) -> bool:
+		return self._publish(content = content.content, images = [img.image for img in content.images])
 	
-	def publish(self, content: Content) -> bool:
-		if super().publish(content):
-			if isinstance(content, Microblog):
-				return bool(self._publish(content.content, content.images))
-			elif isinstance(content, Thread):
-				text = "\n".join([microblog.content for microblog in content.microblogs])
-				images = [item for sublist in [microblog.images for microblog in content.images] for item in sublist]
-				return self._publish(content = text, images = images)
-			elif isinstance(content, Article):
-				return self._publish(content = content.content, title = content.title)
-			elif isinstance(content, Image):
-				return self._publish(content = content.content, images = [content.image])
-			elif isinstance(content, Carousel):
-				return self._publish(content = content.content, images = [img.image for img in content.images])
-			elif isinstance(content, Video): # TODO: reddit video posting
-				raise UnimplementedError
-			else:
-				return False
+	# TODO: reddit video posting
+	def Video(self, content: content.Video) -> bool:
+		raise UnimplementedError

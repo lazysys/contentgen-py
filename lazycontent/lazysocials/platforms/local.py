@@ -6,7 +6,7 @@ import os
 from datetime import datetime
 import shutil
 
-from lazycommon.content_type import *
+import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
@@ -44,25 +44,24 @@ class Local(Platform):
 				shutil.copy(media, os.path.join(cwd, f"{i}{os.path.splitext(media)[1]}"))
 		
 		return True
+	
+	def Microblog(self, content: content.Microblog) -> bool:
+		return bool(self._publish(content.content, medias = content.images))
+	def Thread(self, content: content.Thread) -> bool:
+		return bool(self._publish(
+				"\n---\n".join([content.content] + 
+				[microblog.content for microblog in content.microblogs]), 
+				medias = content.images + [image for image in [microblog.images for microblog in content.microblogs]]
+			)
+		)
 
-	def publish(self, content: Content) -> bool:
-		if super().publish(content):
-			if isinstance(content, Microblog):
-				return bool(self._publish(content.content, medias = content.images))
-			elif isinstance(content, Thread):
-				return bool(self._publish(
-						"\n---\n".join([content.content] + 
-						[microblog.content for microblog in content.microblogs]), 
-						medias = content.images + [image for image in [microblog.images for microblog in content.microblogs]]
-					)
-				)
-			elif isinstance(content, Article):
-				return bool(self._publish(content.content))
-			elif isinstance(content, Image):
-				return bool(self._publish(content.content, medias = [content.image]))
-			elif isinstance(content, Carousel):
-				return bool(self._publish(content.content, medias = [img.image for img in content.images]))
-			elif isinstance(content, Video):
-				return bool(self._publish(content.content, medias = [content.video]))
-			else:
-				return False
+	def Article(self, content: content.Article) -> bool:
+		return bool(self._publish(content.content))
+
+	def Image(self, content: content.Image) -> bool:
+		return bool(self._publish(content.content, medias = [content.image]))
+	def Carousel(self, content: content.Carousel) -> bool:
+		return bool(self._publish(content.content, medias = [img.image for img in content.images]))
+
+	def Video(self, content: content.Video) -> bool:
+		return bool(self._publish(content.content, medias = [content.video]))

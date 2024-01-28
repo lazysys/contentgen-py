@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import List
 
 import tweepy
-from lazycommon.content_type import *
+import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
@@ -75,34 +75,33 @@ class Twitter(Platform):
 				else:
 					print(str(e))
 				return None
-		
 
-	def publish(self, content: Content) -> bool:
-		if super().publish(content):
-			if isinstance(content, Microblog):
-				return bool(self._publish(content.content, medias = content.images))
-			elif isinstance(content, Thread):
-				images = content.images
-				last_tweet = self._publish(content.content, medias = [images.pop() for _ in range(min(len(images), self.max_images))])
-				for microblog in content.microblogs:
-					current_images = microblog.images
-					last_tweet = self._publish(
-							microblog.content, 
-							medias = [current_images.pop() for _ in range(min(len(current_images), self.max_images))] + 
-							[images.pop() for _ in range(max(0, self.max_images - len(current_images)))], 
-							in_reply_to = last_tweet
-					)
-					images += current_images
-				if len(images) > 0:
-					print("Twitter: WARNING: Left-over images from thread, dropping them!")
-				return bool(last_tweet)
-			elif isinstance(content, Article):
-				return bool(self._publish(content.content))
-			elif isinstance(content, Image):
-				return bool(self._publish(content.content, medias = [content.image]))
-			elif isinstance(content, Carousel):
-				return bool(self._publish(content.content, medias = [img.image for img in content.images]))
-			elif isinstance(content, Video):
-				return bool(self._publish(content.content, medias = [content.video]))
-			else:
-				return False
+	def Microblog(self, content: content.Microblog) -> bool:
+		return bool(self._publish(content.content, medias = content.images))
+	def Thread(self, content: content.Thread) -> bool:
+		images = content.images
+		last_tweet = self._publish(content.content, medias = [images.pop() for _ in range(min(len(images), self.max_images))])
+		for microblog in content.microblogs:
+			current_images = microblog.images
+			last_tweet = self._publish(
+					microblog.content, 
+					medias = [current_images.pop() for _ in range(min(len(current_images), self.max_images))] + 
+					[images.pop() for _ in range(max(0, self.max_images - len(current_images)))], 
+					in_reply_to = last_tweet
+			)
+			images += current_images
+		if len(images) > 0:
+			print("Twitter: WARNING: Left-over images from thread, dropping them!")
+		return bool(last_tweet)
+	
+	# FIXME: probably too long without X Premium Pro 420 ElonMusk orwhat
+	def Article(self, content: content.Article) -> bool:
+		return bool(self._publish(content.content))
+
+	def Image(self, content: content.Image) -> bool:
+		return bool(self._publish(content.content, medias = [content.image]))
+	def Carousel(self, content: content.Carousel) -> bool:
+		return bool(self._publish(content.content, medias = [img.image for img in content.images]))
+
+	def Video(self, content: content.Video) -> bool:
+		return bool(self._publish(content.content, medias = [content.video]))
