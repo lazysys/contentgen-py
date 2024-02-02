@@ -1,18 +1,20 @@
 from typing import List
 from dataclasses import dataclass
 
+from io import BufferedReader
+
 @dataclass
 class Content:
 	content: str
 
 @dataclass
 class Microblog(Content):
-	images: List[bytes] = None
+	images: List[BufferedReader] = None
 # NOTE: don't you dare inherit Microblog from Thread, that might feel cool now but imagine the implications...
 @dataclass
 class Thread(Content):
 	microblogs: List[Microblog] = None
-	images: List[bytes] = None
+	images: List[BufferedReader] = None
 
 @dataclass
 class Article(Content):
@@ -30,7 +32,7 @@ class LongVideo(Video):
 
 @dataclass
 class Image(Content):
-	image: bytes
+	image: BufferedReader
 @dataclass
 class Carousel(Content):
 	images: List[Image]

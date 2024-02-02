@@ -5,6 +5,8 @@ import opengraph_py3
 import requests
 import tempfile
 
+from io import BufferedReader
+
 @dataclass
 class Entry:
 	"""
@@ -15,7 +17,7 @@ class Entry:
 	entry: Dict
 	
 	@property
-	def thumbnail(self) -> str:
+	def thumbnail(self) -> BufferedReader:
 		"""
 		Download the thumbnail from the OpenGraph metadata.
 		
@@ -28,7 +30,7 @@ class Entry:
 			return None
 
 	@property
-	def images(self) -> List[str]: # TODO: implement scraping all images from an entry
+	def images(self) -> List[BufferedReader]: # TODO: implement scraping all images from an entry
 		"""
 		Download all images that appear in this entry.
 
@@ -38,7 +40,7 @@ class Entry:
 		return []
 
 	@property
-	def related_images(self) -> List[str]: # TODO: implement searching for related images
+	def related_images(self) -> List[BufferedReader]: # TODO: implement searching for related images
 		"""
 		Download all images that appear in this entry PLUS anything that is related to the topic of the given entry.
 
@@ -59,19 +61,14 @@ class Entry:
 		except AttributeError:
 			return self.__getattribute__(attr)
 
-	def _download_image(self, url: str) -> str:
-		"""
-		Download an image from the specified location into a temporary file.
-		Move/copy/upload/... it as soon as you can, as it is a TEMPORARY file.
-
-		:return: The path to the temporary image file.
-		"""
-
+	def _download_image(self, url: str) -> BufferedReader:
 		response = requests.get(url)
 		if response.status_code == 200:
 			_, temp_file_path = tempfile.mkstemp(suffix='.jpg', prefix='downloaded_image_', dir=tempfile.gettempdir())
 			with open(temp_file_path, 'wb') as temp_file:
 				temp_file.write(response.content)
+			with open(temp_file_path, "rb") as f:
+				return BufferedReader(f)
 			return temp_file_path
 		else:
 			return None

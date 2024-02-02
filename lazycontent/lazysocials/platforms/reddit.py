@@ -10,6 +10,8 @@ import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
+from io import BufferedReader
+
 @dataclass(frozen=True)
 class RedditAuth:
 	"""
@@ -59,7 +61,7 @@ class Reddit(Platform):
 		)
 	
 	# TODO: captions per image
-	def _images_to_inlines(self, images: List[str]) -> Dict[str, InlineImage]:
+	def _images_to_inlines(self, images: List[BufferedReader]) -> Dict[str, InlineImage]:
 		inlines = {}
 		count = 0
 		for image in images:
@@ -81,7 +83,7 @@ class Reddit(Platform):
 			result += f" {{{key}}}"
 		return result
 	# FIXME: image filename as title and no image, what??
-	def _publish(self, content: str, title: str = None, images: List[str] = []) -> bool:
+	def _publish(self, content: str, title: str = None, images: List[BufferedReader] = []) -> bool:
 		for subreddit in self.subreddits:
 			flair = [flair["flair_template_id"] for flair in subreddit[0].flair.link_templates.user_selectable() if flair["flair_text"] == subreddit[1]]
 			subreddit = subreddit[0]

@@ -7,6 +7,7 @@ import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
 
+from io import BufferedReader
 
 @dataclass(frozen=True)
 class TwitterAuth:
@@ -51,16 +52,16 @@ class Twitter(Platform):
 		    access_token_secret = self._twitter_auth.access_token_secret
 		))
 	
-	def _medias_to_media_ids(self, medias: List[str]) -> List[str]:
+	def _medias_to_media_ids(self, medias: List[BufferedReader]) -> List[str]:
 		ids = []
 		for media in medias:
 			if media:
-				ids.append(self._old_client.media_upload(media).media_id_string)
+				ids.append(self._old_client.media_upload(file=media.raw).media_id_string)
 		if len(ids) < 1:
 			ids = None
 		return ids
 
-	def _publish(self, content: str, medias: List[str] = [], in_reply_to: str = None) -> str:
+	def _publish(self, content: str, medias: List[BufferedReader] = [], in_reply_to: str = None) -> str:
 		while True:
 			try:
 				response = self._client.create_tweet(text = content, media_ids = self._medias_to_media_ids(medias), in_reply_to_tweet_id = in_reply_to)

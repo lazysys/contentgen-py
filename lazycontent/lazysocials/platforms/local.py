@@ -4,11 +4,15 @@ from typing import List
 
 import os
 from datetime import datetime
-import shutil
 
 import lazycommon.content_type as content
 
 from lazysocials.platforms.platform import Platform
+
+import magic
+import mimetypes
+
+from io import BufferedReader
 
 @dataclass
 class Local(Platform):
@@ -26,7 +30,7 @@ class Local(Platform):
 		if not os.path.exists(self._root):
 			os.makedirs(self._root)
 
-	def _publish(self, content: str, medias: List[str] = []):
+	def _publish(self, content: str, medias: List[BufferedReader] = []):
 		count = 0
 		while True:
 			cwd = os.path.join(self.root, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}-{count}")
@@ -39,9 +43,18 @@ class Local(Platform):
 		with open(os.path.join(cwd, "content.txt"), "w") as file:
 			file.write(content)
 		
+		mag = magic.Magic()
 		for i, media in enumerate(medias):
 			if media:
-				shutil.copy(media, os.path.join(cwd, f"{i}{os.path.splitext(media)[1]}"))
+				mime = mag.from_buffer(media)
+				ext = mimetypes.guess_extension(mime)
+				with open(os.path.join(cwd, f"{i}media.{ext}")) as f:
+					chunk_size = 4096
+					chunk = media.read(chunk_size)
+					if not chunk:
+						break
+					f.write(chunk)
+		mag.close()
 		
 		return True
 	
