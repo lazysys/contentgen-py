@@ -1,20 +1,11 @@
-from abc import ABC, abstractmethod
 from typing import List
 
-from lazycommon.content_type import Content
+from lazycommon.content.types import Content
 from lazycommon.entry import Entry
+from lazycommon.slide import Slide
+from lazycommon.runner import Runner
 
-class Summarizer(ABC):
-	"""
-	A generic interface for a summarizer.
-	"""
-	@abstractmethod
-	def summarize(self, entries: List[Entry], into: Content) -> List[str]:
-		"""
-		This function takes list of entries, which will be converted into the specified content type's needed text.
-
-		:return: A list of text segments.
-		"""
-
-		pass
+class Summarizer(Runner[Content, List[Slide]]):
+	def summarize(self, entries: List[Entry], into: Content) -> List[Slide]:
+		self.run(into, entries)
 
