@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import List
 
 import tweepy
-import lazycommon.content_type as content
+import lazycommon.content.types as types
 
 from lazysocials.platforms.platform import Platform
 
@@ -77,9 +77,9 @@ class Twitter(Platform):
 					print(str(e))
 				return None
 
-	def Microblog(self, content: content.Microblog) -> bool:
+	def Microblog(self, content: types.Microblog) -> bool:
 		return bool(self._publish(content.content, medias = content.images))
-	def Thread(self, content: content.Thread) -> bool:
+	def Thread(self, content: types.Thread) -> bool:
 		images = content.images
 		last_tweet = self._publish(content.content, medias = [images.pop() for _ in range(min(len(images), self.max_images))])
 		for microblog in content.microblogs:
@@ -96,13 +96,13 @@ class Twitter(Platform):
 		return bool(last_tweet)
 	
 	# FIXME: probably too long without X Premium Pro 420 ElonMusk orwhat
-	def Article(self, content: content.Article) -> bool:
+	def Article(self, content: types.Article) -> bool:
 		return bool(self._publish(content.content))
 
-	def Image(self, content: content.Image) -> bool:
+	def Image(self, content: types.Image) -> bool:
 		return bool(self._publish(content.content, medias = [content.image]))
-	def Carousel(self, content: content.Carousel) -> bool:
+	def Carousel(self, content: types.Carousel) -> bool:
 		return bool(self._publish(content.content, medias = [img.image for img in content.images]))
 
-	def Video(self, content: content.Video) -> bool:
+	def Video(self, content: types.Video) -> bool:
 		return bool(self._publish(content.content, medias = [content.video]))

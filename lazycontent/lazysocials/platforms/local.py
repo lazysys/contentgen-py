@@ -5,7 +5,7 @@ from typing import List
 import os
 from datetime import datetime
 
-import lazycommon.content_type as content
+import lazycommon.content.types as types
 
 from lazysocials.platforms.platform import Platform
 
@@ -58,9 +58,9 @@ class Local(Platform):
 		
 		return True
 	
-	def Microblog(self, content: content.Microblog) -> bool:
+	def Microblog(self, content: types.Microblog) -> bool:
 		return bool(self._publish(content.content, medias = content.images))
-	def Thread(self, content: content.Thread) -> bool:
+	def Thread(self, content: types.Thread) -> bool:
 		return bool(self._publish(
 				"\n---\n".join([content.content] + 
 				[microblog.content for microblog in content.microblogs]), 
@@ -68,13 +68,13 @@ class Local(Platform):
 			)
 		)
 
-	def Article(self, content: content.Article) -> bool:
+	def Article(self, content: types.Article) -> bool:
 		return bool(self._publish(content.content))
 
-	def Image(self, content: content.Image) -> bool:
+	def Image(self, content: types.Image) -> bool:
 		return bool(self._publish(content.content, medias = [content.image]))
-	def Carousel(self, content: content.Carousel) -> bool:
+	def Carousel(self, content: types.Carousel) -> bool:
 		return bool(self._publish(content.content, medias = [img.image for img in content.images]))
 
-	def Video(self, content: content.Video) -> bool:
+	def Video(self, content: types.Video) -> bool:
 		return bool(self._publish(content.content, medias = [content.video]))

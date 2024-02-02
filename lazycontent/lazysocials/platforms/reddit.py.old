@@ -6,8 +6,6 @@ import praw
 from praw.models import InlineGif, InlineImage, InlineVideo, InlineMedia, Subreddit
 from praw.exceptions import RedditAPIException
 
-import lazycommon.content_type as content
-
 from lazysocials.platforms.platform import Platform
 
 from io import BufferedReader
