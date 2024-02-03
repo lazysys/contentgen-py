@@ -3,7 +3,7 @@ from lazycommon.content.types import Microblog
 
 from typing import List
 
-def _Microblog(slides: List[Slide]) -> [{"name": "content", "type": Microblog}]:
+def from_slides_to_microblog(slides: List[Slide]) -> [{"name": "content", "type": Microblog}]:
 	return Microblog.from_slide(slides[0])
 
-main_callable = _Microblog
+main_callable = from_slides_to_microblog
