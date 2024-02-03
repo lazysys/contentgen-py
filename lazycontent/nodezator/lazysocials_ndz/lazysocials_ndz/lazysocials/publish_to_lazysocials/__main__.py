@@ -1,4 +1,4 @@
-from ... import LazySocials
+from lazysocials import LazySocials
 from lazycommon.content.types import Content
 
 def publish_to_lazysocials(lazysocials: LazySocials, *contents: Content) -> [{"name": "lazysocials", "type": LazySocials}]:

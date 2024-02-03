@@ -1,4 +1,4 @@
-from ...templates.folder import FolderTemplate
+from lazycanvas.templates.folder import FolderTemplate
 
 main_callable = FolderTemplate
 

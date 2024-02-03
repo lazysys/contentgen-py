@@ -1,4 +1,4 @@
-from ...img_editor import ImageEditor
+from lazycanvas.img_editor import ImageEditor
 
 from PIL import Image
 

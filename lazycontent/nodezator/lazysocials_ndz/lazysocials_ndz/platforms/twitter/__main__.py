@@ -1,5 +1,5 @@
-from .. import Twitter
-from ..twitter import TwitterAuth
+from lazysocials.platforms import Twitter
+from lazysocials.platforms.twitter import TwitterAuth
 
 from lazycommon.content.types import Content
 

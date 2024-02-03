@@ -1,4 +1,4 @@
-from .. import StorageConfig
+from feedreaper import StorageConfig
 
 main_callable = StorageConfig
 

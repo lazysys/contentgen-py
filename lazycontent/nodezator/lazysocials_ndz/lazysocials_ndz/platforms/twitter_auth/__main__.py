@@ -1,4 +1,4 @@
-from ..twitter import TwitterAuth
+from lazysocials.platforms.twitter import TwitterAuth
 
 main_callable = TwitterAuth
 

@@ -1,5 +1,5 @@
-from ... import LazyCanvas
-from ...templates import CanvasTemplate
+from lazycanvas import LazyCanvas
+from lazycanvas.templates import CanvasTemplate
 
 main_callable = LazyCanvas
 

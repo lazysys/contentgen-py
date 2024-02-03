@@ -1,6 +1,7 @@
-
 from ..runner import Runner
 from .types import Content
+
+from typing import TypeVar
 
 R = TypeVar("R")
 class ContentRunner(Runner[Content, R]):

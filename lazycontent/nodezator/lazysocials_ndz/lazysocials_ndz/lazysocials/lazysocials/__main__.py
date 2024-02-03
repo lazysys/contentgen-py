@@ -1,5 +1,5 @@
-from ... import LazySocials
-from ...platforms import Platform
+from lazysocials import LazySocials
+from lazysocials.platforms import Platform
 
 def lazysocials(*platforms: Platform) -> [{"name": "lazysocials", "type": LazySocials}]:
 	return LazySocials(platforms)

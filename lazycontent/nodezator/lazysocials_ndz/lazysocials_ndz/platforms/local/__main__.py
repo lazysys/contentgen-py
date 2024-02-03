@@ -1,4 +1,4 @@
-from .. import Local
+from lazysocials.platforms import Local
 
 from lazycommon.content.types import Content
 
