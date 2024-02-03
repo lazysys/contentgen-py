@@ -5,7 +5,9 @@ from lazycommon.content.types import Content
 
 from typing import Type
 
-def twitter(auth: TwitterAuth, *types: Type[Content]) -> [{"name": "twitter", "type": Twitter}]:
-	return Twitter(auth, types)
+main_callable = Twitter
 
-main_callable = twitter
+def _Twitter(auth: TwitterAuth, *types: Type[Content], max_images: {"widget_name": "int_float_entry", "widget_kwargs": {"min_value": 0, "max_value": 4}, "type": int} = 4) -> [{"name": "twitter", "type": Twitter}]:
+	pass
+
+signature_callable = _Twitter

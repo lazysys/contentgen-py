@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List
+from typing import List, Type
 
 import tweepy
 import lazycommon.content.types as types
@@ -20,10 +20,11 @@ class TwitterAuth:
 	access_token: str
 	access_token_secret: str
 
-@dataclass
 class Twitter(Platform):
-	_twitter_auth: TwitterAuth
-	max_images: int = 4
+	def __init__(auth: TwitterAuth, *types: Type[types.Content], max_images: int = 4):
+		self._twitter_auth = auth
+		self.max_images = max_images
+		super().__init__(types)
 		
 	@property
 	def twitter_auth(self):

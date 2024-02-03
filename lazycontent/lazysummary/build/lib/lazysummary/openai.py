@@ -5,6 +5,7 @@ from typing import List, Type, get_type_hints, get_args
 
 from lazycommon.entry import Entry
 from lazycommon.slide import Slide
+from lazycommon.content.types import Content
 
 from .summarizer import Summarizer
 
@@ -53,16 +54,11 @@ class OpenAIChat:
 		}
 		], model=self.model).choices[0].message.content
 
-@dataclass
 class OpenAISummarizer(Summarizer):
-	"""
-	Glues the [Summarizer] interface and the [OpenAIChat] API.
-	
-	:param api: An instance of the [OpenAIChat] class.
-	"""
+	def __init__(self, api: OpenAIChat, *types: Type[Content]):
+		self.api = api
+		super().__init__(types)
 
-	api: OpenAIChat
-	
 	def _convert_answer_to_std(self, answer: str) -> List[str]:
 		lines = answer.split("\n")
 		title = lines[0].replace("Title: ", "")

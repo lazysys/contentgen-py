@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type
 
 from lazycommon.content.types import Content
 from lazycommon.entry import Entry

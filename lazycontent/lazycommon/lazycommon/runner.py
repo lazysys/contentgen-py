@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Type, TypeVar, Generic, Any
 
 from .content.types import Content
@@ -14,7 +14,7 @@ T = TypeVar("T")
 R = TypeVar("R")
 @dataclass
 class Runner(Generic[T, R]):
-	types: List[Type[Content]]
+	types: List[Type[Content]] = field(default_factory=list)
 
 	def __getattr__(self, name: str):
 		raise TypeNotImplemented(self, name)
@@ -25,7 +25,7 @@ class Runner(Generic[T, R]):
 	def _is_type_enabled(self, typ: Type[T]) -> bool:
 		return self._is_type_in(typ, self.types)
 	def _can_run(self, typ: Type[T]) -> bool:
-		return True if len(types) <= 0 else self._is_type_enabled(typ)
+		return True if len(self.types) <= 0 else self._is_type_enabled(typ)
 
 	def run(self, typ: Type[T], *params) -> R:
 		if self._can_run(typ):
@@ -33,9 +33,9 @@ class Runner(Generic[T, R]):
 				mro = typ.mro()
 				try:
 					return getattr(self, typ.__name__)(*params)
-				except TypeNotSupported:
+				except TypeNotImplemented:
 					typ = mro[1]
 				if len(mro) <= 2:
-					raise TypeNotSupported(typ.__name__)
+					raise TypeNotImplemented(typ.__name__)
 		else:
 			raise TypeDisabled(self, typ.__name__)

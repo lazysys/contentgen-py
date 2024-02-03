@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List
+from typing import List, Type
 
 import os
 from datetime import datetime
@@ -14,9 +14,10 @@ import mimetypes
 
 from io import BufferedReader
 
-@dataclass
 class Local(Platform):
-	_root: str
+	def __init__(self, root: str, *types: Type[types.Content]):
+		self._root = root
+		super().__init__(types)
 	
 	@property
 	def root(self):

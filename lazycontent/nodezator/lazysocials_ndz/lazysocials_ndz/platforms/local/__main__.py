@@ -4,7 +4,10 @@ from lazycommon.content.types import Content
 
 from typing import Type
 
-def local(root: { "widget_name": "path_preview", "type": str } = ".", *types: Type[Content]) -> [{"name": "local", "type": Local}]:
-	return Local(_root = root, types = types)
+main_callable = Local
 
-main_callable = local
+def _Local(root: { "widget_name": "path_preview", "type": str } = ".", *types: Type[Content]) -> [{"name": "local", "type": Local}]:
+	pass
+
+signature_callable = _Local
+
