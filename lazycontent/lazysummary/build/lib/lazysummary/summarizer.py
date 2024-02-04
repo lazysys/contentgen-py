@@ -7,5 +7,5 @@ from lazycommon.runner import Runner
 
 class Summarizer(Runner[Content, List[Slide]]):
 	def summarize(self, entries: List[Entry], into: Content) -> List[Slide]:
-		self.run(into, entries)
+		return self.run(into, entries)
 

@@ -47,14 +47,11 @@ class Local(Platform):
 		mag = magic.Magic()
 		for i, media in enumerate(medias):
 			if media:
-				mime = mag.from_buffer(media)
+				data = media.read()
+				mime = mag.from_buffer(data)
 				ext = mimetypes.guess_extension(mime)
 				with open(os.path.join(cwd, f"{i}media.{ext}")) as f:
-					chunk_size = 4096
-					chunk = media.read(chunk_size)
-					if not chunk:
-						break
-					f.write(chunk)
+					f.write(data)
 		mag.close()
 		
 		return True

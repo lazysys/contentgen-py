@@ -6,4 +6,4 @@ from typing import TypeVar
 R = TypeVar("R")
 class ContentRunner(Runner[Content, R]):
 	def run(self, content: Content) -> R:
-		self.run(type(Content), content)
+		return super().run(type(content), content)
