@@ -67,8 +67,8 @@ class Entry:
 			_, temp_file_path = tempfile.mkstemp(suffix='.jpg', prefix='downloaded_image_', dir=tempfile.gettempdir())
 			with open(temp_file_path, 'wb') as temp_file:
 				temp_file.write(response.content)
-			with open(temp_file_path, "rb") as f:
-				return BufferedReader(f)
-			return temp_file_path
+			# FIXME: this could cause issues for long running tasks, although LazyContent is supposed to be only run periodically
+			f = open(temp_file_path, "rb")
+			return BufferedReader(f)
 		else:
 			return None

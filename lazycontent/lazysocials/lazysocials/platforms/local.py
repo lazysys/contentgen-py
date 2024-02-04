@@ -44,15 +44,14 @@ class Local(Platform):
 		with open(os.path.join(cwd, "content.txt"), "w") as file:
 			file.write(content)
 		
-		mag = magic.Magic()
+		mag = magic.Magic(mime = True)
 		for i, media in enumerate(medias):
 			if media:
 				data = media.read()
 				mime = mag.from_buffer(data)
 				ext = mimetypes.guess_extension(mime)
-				with open(os.path.join(cwd, f"{i}media.{ext}")) as f:
+				with open(os.path.join(cwd, f"{i}media{ext}"), "wb") as f:
 					f.write(data)
-		mag.close()
 		
 		return True
 	
