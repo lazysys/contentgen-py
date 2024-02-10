@@ -8,5 +8,5 @@ from io import BufferedReader
 class Slide:
 	caption: str
 	headline: bool = False
-	images: List[BufferedReader] = field(default_factory=[])
+	images: List[BufferedReader] = field(default_factory=list)
 	

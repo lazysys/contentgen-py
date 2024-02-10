@@ -23,7 +23,7 @@ class Thread(Content):
 	images: List[BufferedReader] = None
 
 	@classmethod
-	def from_slides(cls, slide: List[Slide]):
+	def from_slides(cls, slides: List[Slide]):
 		return cls(content = slides[0].caption, microblogs = [Microblog.from_slide(slide) for slide in slides[1:]], images = slides[0].images)
 
 @dataclass
@@ -55,6 +55,6 @@ class Carousel(Content):
 	images: List[Image]
 
 	@classmethod
-	def from_slides(cls, slide: List[Slide]):
+	def from_slides(cls, slides: List[Slide]):
 		# NOTE: do we need more in the caption?
 		return cls(content = slides[0].caption, images = [Image.from_slide(slide) for slide in slides])

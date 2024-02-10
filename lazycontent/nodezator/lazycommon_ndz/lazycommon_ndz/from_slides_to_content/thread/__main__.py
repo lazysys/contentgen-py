@@ -3,7 +3,7 @@ from lazycommon.content.types import Thread
 
 from typing import List
 
-def from_slides_to_Thread(slides: List[Slide]) -> [{"name": "content", "type": Thread}]:
+def from_slides_to_thread(slides: List[Slide]) -> [{"name": "content", "type": Thread}]:
 	return Thread.from_slides(slides)
 
-main_callable = from_slides_to_Thread
+main_callable = from_slides_to_thread

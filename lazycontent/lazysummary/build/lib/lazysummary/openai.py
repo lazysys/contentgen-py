@@ -88,8 +88,8 @@ class OpenAISummarizer(Summarizer):
 		combined = self._combined_entries(entries)
 		answer = self.api.generate(f"You're a highly qualified tech journalist.\n\ndon't prefix the tweets\ndon't use hashtags\n\nCreate a Twitter thread with tweet blocks seperated by --- from the following article(s) (combine them into one summary thread):" + combined)
 		answers = answer.split("\n---\n")
-		headline = Slide(caption = answer[0], headline = True, images = [entry.thumbnail for entry in entries])
-		return headline + [Slide(caption = answer) for answer in answers[1:]]
+		headline = Slide(caption = answers[0], headline = True, images = [entry.thumbnail for entry in entries])
+		return [headline] + [Slide(caption = ans) for ans in answers[1:]]	
 
 	def Article(self, entries: List[Entry]) -> List[Slide]:
 		combined = self._combined_entries(entries)
@@ -117,4 +117,4 @@ class OpenAISummarizer(Summarizer):
 		combined = self._combined_entries(entries)
 		std = self._convert_carousel_to_std(self.api.generate(f"You're a highly qualified tech journalist. Make an Instagram carousel slide by slide using this format (every slide is one line, one sentence, atomic short and concise) (only one caption which can be longer):\n\nCaption: <caption>\n\n1: <first slide>\n2: <second slide>\n<...as many as you need...>\n\nSummarize in this format the following article(s) (in your head combine these into one):" + combined))
 		headline = Slide(caption = std[0], headline = True, images = [entry.thumbnail for entry in entries])
-		return headline + [Slide(caption = answer) for answer in std[1:]]
+		return [headline] + [Slide(caption = ans) for ans in std[1:]]
