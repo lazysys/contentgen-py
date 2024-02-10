@@ -46,7 +46,7 @@ class EntryManager:
 		count = 0
 		while True:
 			entry = random.choice(entries)
-			if self._is_entry_used(entry) or not hasattr(entry, "content"):
+			if self._is_entry_used(entry) or not(entry.get("title", False) and entry.get("content", False)):
 				count += 1
 				entry = None
 				if count == len(entries):
