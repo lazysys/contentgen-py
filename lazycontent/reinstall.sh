@@ -1,1 +1,1 @@
-pip install -e lazycanvas/ lazycommon/ lazysocials/ lazysummary/ reapers/feedreaper/
+pip install -e lazycanvas/ lazycommon/ lazysocials/ lazysummary/ reapers/feedreaper/ lazyllm
